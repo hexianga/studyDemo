@@ -14,7 +14,9 @@
 
   <script>
 
-    // 写一个观察者模式
+
+
+    // 1. 写一个观察者模式
     let observable = {};
     observable.listenerList = []; // 存放监听器函数的列表
 
@@ -31,47 +33,268 @@
     // 测试可观察对象
     observable.subscribe(function(data) {
       console.log('我是第一个注册的监听器函数')
-    });
+    })
 
     observable.subscribe(function(data) {
       console.log('我是第二个注册的监听器函数')
-    });
+    })
 
     observable.subscribe(function(data) {
       console.log('我是第三个注册的监听器函数')
-    });
+    })
 
     function clickMe() {
       observable.publish('data');
     }
-    
+  
 
 
 
-    // 写一个单例模式
+
+
+
+
+
+
+    // 2.写一个单例模式
+
+    // （1）通过类上的某个方法来获取
+    function Singletom(name) {
+      this.name = name || 'Singleton'
+      this.instance = null
+    }
+
+    // 给对象添加方法
+    Singletom.prototype.getName = function() {
+      return this.name
+    }
+
+    // 添加静态方法获取对象
+    Singletom.getInstance = function(name) {
+      if (!this.instance) {
+        this.instance = new Singletom(name)
+      }
+
+      return this.instance
+    }
+    const obj1 = Singletom.getInstance()
+    const obj2 = Singletom.getInstance()
+
+    // console.log(obj2 === obj1, obj1.getName());
+
+
+    // 如果不把 instance 放到 Singletom 类中呢？
+    // 保证这个类的单一性，努力遵循开放封闭原则，比如我想通过这个类构建很多的对象，但是不需要 instance 属性。
+
+    function getInstance() {
+      let instance // 通过闭包来保存状态，前提是主函数必须先执行了才能有这么一个变量
+      return function () {
+
+        if (!instance) {
+          instance = new Singletom();
+        }
+
+        return instance;
+      }
+    }
+
+    Singletom.getInstance = getInstance(); // 执行主函数
+
+    const obj3 = Singletom.getInstance()
+    const obj4 = Singletom.getInstance()
+
+    // console.log(obj3 === obj4, obj3.getName());
+
+
+    // 缺点：增加了类的不透明性，使用者必须知道这是一个单例类，通过类上面的静态方法来获取对象。和一般的通过 new 获取对象不一样
+
+
+
+
+
+    // （2）通过 new 的方式来获取
     function CreateSingleton() {
       let instance; // 通过该变量来保存实例
 
       function create(name) {
         if (instance) { // 引用 instance，形成闭包
-          return instance;
+          return instance
         }
 
-        this.name = name;
+        this.name = name
 
-        instance = this;
-        return this;
+        instance = this
+        return this
       }
 
-      return create;
+      return create
     }
 
-    const Single = CreateSingleton();
+    const Single = CreateSingleton()
 
-    const div1 = new Single('dasasas');
-    const div2 = new Single('sasasasa');
+    const div1 = new Single('dasasas')
+    const div2 = new Single('sasasasa')
 
-    console.log(div1.name, div2.name, div1 === div2);
+    // console.log(div1.name, div2.name, div1 === div2)
+
+
+
+
+    // 3. 装饰者模式
+    // 优点：把行为依照职责分成粒度更细的函数，后通过装饰把它们合并到一起，这有助于我们编写一个松耦合和高复用性的系统。
+    // 装饰器可以改变函数的参数
+    // （1）通过 AOP 装饰函数，直接修改原型
+    // before
+    console.log('AOP 实现装饰器 -----------------');
+    Function.prototype.before = function (boforefn) {
+      const that = this;
+      return function() {
+        boforefn.apply(this, arguments)
+        return that.apply(this, arguments)
+      }
+    }
+    // after
+    Function.prototype.after = function (afterfn) {
+      const that = this;
+      return function() {
+        let result = that.apply(this, arguments)
+        afterfn.apply(this, arguments);
+        return result;
+      }
+    }
+
+    function print(obj) {
+      obj && console.log(obj)
+      console.log('print')
+    }
+
+    function beforefn(obj) {
+      console.log('before')
+      console.log(obj)
+      obj.b = 3; // 动态改变传入的参数
+    }
+
+    function afterfn() {
+      console.log('after');
+    }
+
+    // print.before(beforefn)()
+    // print.after(afterfn)()
+
+    // （2）上面的方式修改了原型上面的方法，如果我现在不想要修改原型怎么办？
+    // 直接编写工具函数 before 和 after，将原函数和要注入的函数作为参数传递
+    console.log('工具方法实现装饰器-----------------');
+    function before(fn, beforefn) {
+      return function () {
+        beforefn.apply(this, arguments)
+        return fn.apply(this, arguments)
+      }
+    }
+
+    function after(fn, afterfn) {
+      return function () {
+        const result = fn.apply(this, arguments)
+        afterfn.apply(this, arguments)
+        return result
+      }
+    }
+
+    // const obj = {'a': 3}
+    // before(print, beforefn)(obj)
+    // after(print, afterfn)()
+    
+
+
+    // 4.代理模式
+    // 代理对象和原对象都有相同的接口，使用代理模式完全是一种优化的考虑
+    // 实现图片加载
+    // 由于图片过大或者网络不佳，图片的位置往往有段时间会是一片空白。常见的做法是先用一张 loading 图片占位，然后用异步的方式加载图片，等图片加载好了再把它填充到img节点里，这种场景就很适合使用虚拟代理。 
+    let insertImage = function () {
+      const imgNode = document.createElememt('img');
+      document.body.appendChild(imgNode);
+
+      return {
+        setSrc: function (src) {
+          imgNode.src = src;
+        }
+      }
+    }
+
+    insertImage().setSrc('http://xxxx'); // 每次调用向页面中插入图片，此时没有使用懒加载
+
+    // 使用懒加载
+    let insertImage = function () {
+      const imgNode = document.createElememt('img')
+      document.body.appendChild(imgNode)
+      const img = new Image()
+
+      img.onload = function () {
+        imgNode.src = this.src
+      } // 当图片加载完成的时候要修改 src，这就是实现了图片懒加载
+
+      return {
+        setSrc: function (src) {
+          imgNode.src = 'loading.jpg'
+          img.src = src
+        }
+      }
+    }
+
+    insertImage().setSrc('http://xxxx'); // 同样的方式调用
+
+    // 使用代理模式
+    // 为遵循代码的单一职能原则，使用代理模式。把添加标签和预加载的功能分开
+    const insertImage = function () {
+      const imgNode = document.createElememt('img')
+      document.body.appendChild(imgNode)
+      
+      return {
+        setSrc: function (src) {
+          imgNode.src = 'loading.jpg'
+          img.src = src
+        }
+      }
+    }
+
+    // 保证接口的统一
+    const proxyImageLoad = function () {
+      const img = new Image()
+      const insertImage = insertImage() // 生成一个对象
+      
+      img.onload = function () {
+        insertImage.setSrc(this.src)
+      }
+
+      return {
+        setSrc: function(src) {
+          insertImage.setSrc('loading.jpg')
+          img.src = src;
+        }
+      }
+    }
+
+    // 调用
+    proxyImageLoad().setSrc('http://xxxx')
+
+
+
+
+
+
+
+
+
+
+
+    // 代码编写应该遵循的原则
+    // 1. 单一职能原则(SRP)
+    // 设计模式中的体现：单例模式，代理模式，装饰者模式
+
+
+
+
+
+
 
 
 
