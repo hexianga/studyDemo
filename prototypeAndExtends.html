@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <img src="./images/constructor.png" style="width: 600px;">
+</body>
+
+<script> 
+
+  // 创建对象的方式 3 种
+  // 1. 字面量对象
+  let obj = {'21': 21}
+  let obj = new Object({'21': 21});
+  // 2. new 一个构造函数
+  let obj = new Fn();
+  // 3. Object.create()
+  let obj = Object.create({});
+
+
+
+
+  // 为什么么会出现原型链？
+  // JavaScript 一开始设计的时候，只是非常简易的脚本语言，但因为其中都是对象，所以需要一个机制来联系它们，最后设计了继承
+  // 作者没有使用类的形式实现继承，而是使用了原型链，所以原型链出现的目的就是为了实现继承
+
+
+
+
+  // instanceof 的原理
+  // 判断一个实例是不是某个类的实例？不断地拿原型上面的 constructor 和指定的类名进行比较，如果有一只返回 true，否则返回 false
+
+
+
+
+
+  // 写一个函数，模拟实现 new 的原理
+  function newFn(fn, ...rest) {
+    let obj = Object.create(fn.prototype);
+    let result = fn.apply(obj, rest);
+
+    if(typeof result === 'object') {
+      return result
+    } else {
+      return obj;
+    }
+  }
+
+  function MyConstructor(name) {
+    this.name = name
+  }
+
+  console.log(newFn(MyConstructor, 'Myname'));
+
+
+
+
+
+  // 继承的三种实现和优化
+
+
+  // 1.构造函数实现继承
+  // 缺点：没有办法获取的父类原型对象上面的方法
+  function Parent1 (name) {
+    this.name = "parent"; 
+  }
+
+  Parent1.prototype.getName = function() {
+    return this.name;
+  }
+
+  function Child1 () {
+    Parent1.apply(this, arguments);
+    this.child = "child"
+  }
+
+  console.log(new Child1);
+
+  // 2.实例实现继承
+  // 缺点：共享一个父类实例，如果一个子类实例改变了父类实例中的值，别的子类实例也都会受到影响
+  function Parent2 (name) {
+    this.name = "parent"; 
+  }
+
+  function Child2 () {
+    Parent2.apply(this, arguments);
+    this.child = "child"
+  }
+
+  Child2.prototype = new Parent2;
+  console.log(new Child2);
+
+  // 3. 组合实现继承
+  function Parent3 (name) {
+    this.name = "parent"; 
+  }
+
+  Parent3.prototype.getName = function() {
+    return this.name;
+  }
+
+  function Child3 () {
+    Parent3.apply(this, arguments);
+    this.child = "child"
+  }
+
+  Child3.prototype = new Parent3;
+  console.log(new Child3);
+
+  // 缺点一：父类构造函数执行了两次
+  // 优化：
+  function Parent4 (name) {
+    this.name = "parent"; 
+  }
+
+  Parent4.prototype.getName = function() {
+    return this.name;
+  }
+
+  function Child4 () {
+    Parent4.apply(this, arguments);
+    this.child = "child"
+  }
+
+  Child4.prototype = Parent4.prototype;
+  console.log(new Child4);
+  // console.log((new Child4).constructor, (new Child4) instanceof Child4, (new Child4) instanceof Parent4);
+
+  // 缺点二：没有办法区分当前的实例是 Child4 还是 Parent4 实例化的。
+  // 如何判断对象是某个类的实例？ 应该用 constructor 来判断，instanceof 判断会包含父元素
+  // 上面打印出来的 constructor 是 Parent4，但是应该是 Child4
+  function Parent5 (name) {
+    this.name = "parent"; 
+  }
+
+  Parent5.prototype.getName = function() {
+    return this.name;
+  }
+
+  function Child5 () {
+    Parent5.apply(this, arguments);
+    this.child = "child"
+  }
+
+  Child5.prototype = Object.create(Parent5.prototype); // 创建中间对象
+  Child5.prototype.constructor = Child5; 
+  // constructor 其实也就是 prototype 上的一个属性而已，是一个对象属性
+  // 原型对象的构造函数其实就是函数本身
+
+  console.log(new Child5,'\n',(new Child5).constructor)
+
+  console.log('Object.create:', Object.create({a: 3}));
+
+
+</script>
+</html>
