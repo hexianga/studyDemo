@@ -210,7 +210,7 @@
     // 实现图片加载
     // 由于图片过大或者网络不佳，图片的位置往往有段时间会是一片空白。常见的做法是先用一张 loading 图片占位，然后用异步的方式加载图片，等图片加载好了再把它填充到img节点里，这种场景就很适合使用虚拟代理。 
     let insertImage = function () {
-      const imgNode = document.createElememt('img');
+      const imgNode = document.createElement('img');
       document.body.appendChild(imgNode);
 
       return {
@@ -223,8 +223,8 @@
     insertImage().setSrc('http://xxxx'); // 每次调用向页面中插入图片，此时没有使用懒加载
 
     // 使用懒加载
-    let insertImage = function () {
-      const imgNode = document.createElememt('img')
+    let insertImage1 = function () {
+      const imgNode = document.createElement('img')
       document.body.appendChild(imgNode)
       const img = new Image()
 
@@ -240,18 +240,17 @@
       }
     }
 
-    insertImage().setSrc('http://xxxx'); // 同样的方式调用
+    insertImage1().setSrc('http://xxxx'); // 同样的方式调用
 
     // 使用代理模式
     // 为遵循代码的单一职能原则，使用代理模式。把添加标签和预加载的功能分开
-    const insertImage = function () {
-      const imgNode = document.createElememt('img')
+    const insertImage2 = function () {
+      const imgNode = document.createElement('img')
       document.body.appendChild(imgNode)
       
       return {
         setSrc: function (src) {
-          imgNode.src = 'loading.jpg'
-          img.src = src
+          imgNode.src = src
         }
       }
     }
@@ -259,7 +258,7 @@
     // 保证接口的统一
     const proxyImageLoad = function () {
       const img = new Image()
-      const insertImage = insertImage() // 生成一个对象
+      const insertImage = insertImage2() // 生成一个对象
       
       img.onload = function () {
         insertImage.setSrc(this.src)
@@ -275,6 +274,62 @@
 
     // 调用
     proxyImageLoad().setSrc('http://xxxx')
+
+
+
+
+
+
+
+    // 5. 迭代器模式
+    // 外部迭代器：封装一个遍历器对象，遍历数组或者是类数组
+    let Iterator = function(obj) {
+      // 存放当前指向的状态变量
+      let current = 0;
+
+      // 外部执行 next 方法修改指向
+      let next = function () {
+        current ++;
+      }
+
+      // 判断是否遍历完成的方法
+      let isDone = function () {
+        return current >= obj.length
+      }
+
+      // 获取当前的元素值
+      let getCurrentItem = function () {
+        return obj[current];
+      }
+
+      return {
+        next: next,
+        isDone: isDone,
+        getCurrentItem: getCurrentItem,
+        length: obj.length
+      }
+    }
+
+    const iterator = Iterator([1,2,3,4,5,6]);
+
+    console.log('迭代器对象：', iterator)
+
+    while(!iterator.isDone()) {
+      console.log('外部迭代器封装对象：',iterator.getCurrentItem());
+      iterator.next();
+    }
+
+    // 封装内部迭代器
+    let each = function (arr, callback) {
+      for (let i = 0; i < arr.length; i++) {
+        callback(arr[i], i, arr);
+      }
+    }
+
+    each([1,2,3,4,5], function(item, index) {
+      console.log('内部迭代器', item, index);
+    }) 
+
 
 
 
