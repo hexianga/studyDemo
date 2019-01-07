@@ -5,19 +5,19 @@
     <title>Document</title>
 </head>
 <body>
-    <img src="./constructor.png" style="width: 600px;">
+    <!-- <img src="./constructor.png" style="width: 600px;"> -->
 </body>
 
 <script> 
 
   // 创建对象的方式 3 种
   // 1. 字面量对象
-  let obj = {'21': 21}
-  let obj = new Object({'21': 21});
-  // 2. new 一个构造函数
-  let obj = new Fn();
-  // 3. Object.create()
-  let obj = Object.create({});
+  // let obj = {'21': 21}
+  // let obj = new Object({'21': 21});
+  // // 2. new 一个构造函数
+  // let obj = new Fn();
+  // // 3. Object.create()
+  // let obj = Object.create({});
 
 
 
@@ -153,6 +153,30 @@
 
   console.log('Object.create:', Object.create({a: 3}));
 
+
+  // 延时函数
+
+  function sleep() {
+    const nowTime = Date.now()
+    while(Date.now() - nowTime < 3000) {}
+  }
+
+
+  // 测试函数入栈的数量
+  // chrome 11388
+  // safari 36253
+
+  var a = 1; 
+  function b() {
+    a++;
+    if ( a > 11088) { 
+      console.log(a, typeof a)
+      return a ;
+    } 
+    b()
+  }
+
+  b()
 
 </script>
 </html>

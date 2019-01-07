@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  
+  <script>
+    // new Promise((resolve, reject) => {})
+    // 构造函数说起：
+    // 参数是一个构造函数，函数有两个参数，参数是两个内置函数(闭包)，可以改变状态和 promise 的值
+
+    // 判断函数：
+    function isFunction(fn) {
+      return typeof fn === 'function';
+    }
+    // promise 的三种状态
+    // pending resolve reject
+    const PENDING = 'PENDING';
+    const FUlFILLED = 'FUlFILLED';
+    const REJECT = 'REJECT';
+
+    class MyPromise {
+
+      // 构造函数
+      constructor(handle) {
+        if (!isFunction(handle)) {
+          return new Error('handle must be a function')
+        }
+
+        // 定义状态和值
+        this.status = 'PENDING';
+        this.value = null;
+
+        // 执行函数
+        try {
+          handle(resolve, reject);
+        } catch (error) {
+          this.reject(error);
+        }
+      }
+
+      resolve = (val) => {
+        if (this.status === PENDING) {
+          this.value = value;
+          this.status = FUlFILLED;
+        }
+      }
+
+      reject = (val) => {
+        if (this.status === PENDING) {
+          this.value = value;
+          this.status = REJECT;
+        }
+      }
+
+    }
+
+    // 如此就已经实现了一个构造函数
+
+
+
+
+    // then 方法是 promise 的核心部分
+    // 1. 接受两个参数，参数可选。如果不是一个函数，那么就忽略
+    // 2. onFulfilled 是函数时只能在 promsie 变为 fulfilled 之后再调用，promise 的 value 作为函数的第一个参数
+    // 3. onRejected 类似，只能在函数 promise 变为 rejected 之后再调用
+    // 4. 同一个 promise 上面可以调用很多的 then。所以就需要数组来注册 then 方法中的函数
+
+    // 添加数组维护注册的 then 方法
+
+    class MyPromise {
+
+      // 构造函数
+      constructor(handle) {
+        if (!isFunction(handle)) {
+          return new Error('handle must be a function')
+        }
+
+        // 定义状态和值
+        this.status = 'PENDING';
+        this.value = null;
+
+        // 添加成功回调函数队列
+        this.onFulFilledQueues = []
+        // 添加失败回调函数队列
+        this.onRejectedQueues = []
+
+
+        // 执行函数
+        try {
+          handle(resolve, reject);
+        } catch (error) {
+          this.reject(error);
+        }
+      }
+
+      resolve = (val) => {
+        if (this.status === PENDING) {
+          this.value = value;
+          this.status = FUlFILLED;
+        }
+      }
+
+      reject = (val) => {
+        if (this.status === PENDING) {
+          this.value = value;
+          this.status = REJECT;
+        }
+      }
+
+      // 添加 then 方法
+      then(onFullfilled, onRejected) {
+        const { status, value } = this;
+
+        if (status === PENDING) {
+          this.onFulFilledQueues.push(onFullfilled);
+          this.onRejectedQueues.push(onRejected);
+        } else (status === FUlFILLED) {
+          onFullfilled(value);
+        } else (status === REJECT) {
+          onRejected(value)
+        }
+      }
+
+    }
+
+    // 5. then 方法返回的是一个 promise
+
+    class MyPromise {
+
+      // 构造函数
+      constructor(handle) {
+        if (!isFunction(handle)) {
+          return new Error('handle must be a function')
+        }
+
+        // 定义状态和值
+        this.status = 'PENDING'
+        this.value = null
+
+        // 添加成功回调函数队列
+        this.onFulFilledQueues = []
+        // 添加失败回调函数队列
+        this.onRejectedQueues = []
+
+
+        // 执行函数
+        try {
+          handle(resolve, reject)
+        } catch (error) {
+          this.reject(error)
+        }
+      }
+
+      resolve = (val) => {
+        if (this.status === PENDING) {
+          this.value = value;
+          this.status = FUlFILLED;
+        }
+      }
+
+      reject = (val) => {
+        if (this.status === PENDING) {
+          this.value = value;
+          this.status = REJECT;
+        }
+      }
+
+      // 添加 then 方法
+      then(onFullfilled, onRejected) {
+        const { status, value } = this;
+
+        return new MyPromise(resolve, reject) {
+          if (status === PENDING) {
+            this.onFulFilledQueues.push(onFullfilled);
+            this.onRejectedQueues.push(onRejected);
+          } else (status === FUlFILLED) {
+            // 判断参数
+            if (!isFunction(onFullfilled)) {
+              resolve(value);
+            } else {
+              const result = onFullfilled(value);
+              // 判断是否是 promise
+              if (result instanceof MyPromise) {
+                result.then(resolve, reject);
+              } else {
+                resolve(result);
+              }
+            }
+          } else (status === REJECT) {
+            // 判断参数
+            if (!isFunction(onRejected)) {
+              reject(value);
+            } else {
+              const result = onRejected(value);
+              // 判断是否是 promise
+              if (result instanceof MyPromise) {
+                result.then(resolve, reject);
+              } else {
+                reject(result);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // 6. then 中的两个函数可能会 throw error，所以需要 通过 try...catch... 进行捕获。并且 if..else.. 不如 switch 可读性好
+    // 添加 then 方法
+    then(onFullfilled, onRejected) {
+      const { status, value } = this;
+
+      return new MyPromise(resolve, reject) {
+
+        switch(status) {
+          case PENDING: 
+            this.onFulFilledQueues.push(onFullfilled);
+            this.onRejectedQueues.push(onRejected);
+            break;
+          case FUlFILLED: 
+            try {
+              // 判断参数
+              if (!isFunction(onFullfilled)) {
+                resolve(value);
+              } else {
+                const result = onFullfilled(value);
+                // 判断是否是 promise
+                if (result instanceof MyPromise) {
+                  // 如果结果是一个 promise 则必须等该 promise 的状态变化后再执行下一个回调
+                  result.then(resolve, reject);
+                } else {
+                  resolve(result);
+                }
+              }
+            } catch(e) {
+              reject(e)
+            }
+            break;
+          case REJECT: 
+            try {
+              // 判断参数
+              if (!isFunction(onRejected)) {
+                reject(value);
+              } else {
+                const result = onRejected(value);
+                // 判断是否是 promise
+                if (result instanceof MyPromise) {
+                  result.then(resolve, reject);
+                } else {
+                  reject(result);
+                }
+              }
+            } catch (e) {
+              reject(e)
+            }
+            break;
+          }
+        }
+      }
+
+    // 任务队列中的 then 方法需要依次执行,并且执行后从队列中移除
+    resolve = (val) => {
+      if (this.status === PENDING) {
+        setTimeout(() => {
+          this.value = val;
+          this.status = FUlFILLED;
+          let callback;
+          while(callback = this.onFulFilledQueues.shift()) {
+            callback(val)
+          }
+        }, 0);
+      }
+    }
+
+    reject = (val) => {
+      if (this.status === PENDING) {
+        setTimeout(() => {
+          this.value = val;
+          this.status = REJECT;
+          let callback;
+          while(callback = this.onRejectedQueues.shift()) {
+            callback(val)
+          }
+        }, 0)
+        
+      }
+    }
+
+
+    // 如果 promise 的 resolve 中传入的是一个 promise？？？
+    resolve = (val) => {
+      if (this.status === PENDING) {
+        // 为什么要使用定时器？
+        setTimeout(() => {
+          this.value = val;
+          this.status = FUlFILLED;
+
+          // 执行成功回调函数
+          const fulFilledCall = (val) => {
+            let callback;
+            while(callback = this.onFulFilledQueues.shift()) {
+              callback(val)
+            }
+          }
+
+          // 执行失败回调函数
+          const rejectedCall = () => {
+            let callback;
+            while(callback = this.onRejectedQueues.shift()) {
+              callback(val)
+            }
+          }
+
+          // 如果 resolve 的参数 是 promise？
+          if(promise instanceof MyPromise) {
+            promise.then((val) => {
+              this.value = val;
+              this.status = FUlFILLED;
+              fulFilledCall(val);
+            }, (val) => {
+              this.value = val;
+              this.status = REJECT;
+              rejectedCall(val);
+            })
+          } else {
+            this.value = val;
+            this.status = FUlFILLED;
+            fulFilledCall(val);
+          }
+        }, 0);
+      }
+    }
+
+    // 只有 resolve 执行了之后才会有定时器去执行这些回调函数。
+
+
+
+
+
+    // 完整的代码
+    class MyPromise {
+
+      // 构造函数
+      constructor(handle) {
+        if (!isFunction(handle)) {
+          return new Error('handle must be a function')
+        }
+
+        // 定义状态和值
+        this.status = 'PENDING'
+        this.value = null
+
+        // 添加成功回调函数队列
+        this.onFulFilledQueues = []
+        // 添加失败回调函数队列
+        this.onRejectedQueues = []
+
+
+        // 执行函数, 函数执行出错就 reject
+        try {
+          handle(resolve, reject)
+        } catch (error) {
+          this.reject(error)
+        }
+      }
+
+      resolve = (val) => {
+        if (this.status === PENDING) {
+          const run = () => {
+            this.value = val;
+            this.status = FUlFILLED;
+
+            // 执行成功回调函数
+            const fulFilledCall = (val) => {
+              let callback;
+              while(callback = this.onFulFilledQueues.shift()) {
+                callback(val)
+              }
+            }
+
+            // 执行失败回调函数
+            const rejectedCall = () => {
+              let callback;
+              while(callback = this.onRejectedQueues.shift()) {
+                callback(val)
+              }
+            }
+
+            // 如果 resolve 的参数 是 promise
+            if(promise instanceof MyPromise) {
+              promise.then((val) => {
+                this.value = val;
+                this.status = FUlFILLED;
+                fulFilledCall(val);
+              }, (val) => {
+                this.value = val;
+                this.status = REJECT;
+                rejectedCall(val);
+              })
+            } else {
+              this.value = val;
+              this.status = FUlFILLED;
+              fulFilledCall(val);
+            }
+          }
+          // 为什么要使用定时器？
+          // 设想：如果 mypromise 的参数是一个同步函数，那么后面的回调函数就会立刻执行，就不能实现异步的效果
+          setTimeout(run, 0);
+        }
+      }
+
+      reject = (val) => {
+        if (this.status === PENDING) {
+          const run = () => {
+            this.value = val;
+            this.status = REJECT;
+            let callback;
+            while(callback = this.onRejectedQueues.shift()) {
+              callback(val)
+            }
+          }
+
+          setTimeout(run, 0)
+        }
+      }
+
+      // 添加 then 方法
+      then = (onFullfilled, onRejected) => {
+        const { status, value } = this;
+
+        return new MyPromise(resolve, reject) {
+          switch(status) {
+            case PENDING: 
+              this.onFulFilledQueues.push(onFullfilled);
+              this.onRejectedQueues.push(onRejected);
+              break;
+            case FUlFILLED: 
+              try {
+                // 判断参数
+                if (!isFunction(onFullfilled)) {
+                  resolve(value);
+                } else {
+                  const result = onFullfilled(value);
+                  // 判断是否是 promise
+                  if (result instanceof MyPromise) {
+                    // 如果结果是一个 promise 则必须等该 promise 的状态变化后再执行下一个回调
+                    result.then(resolve, reject);
+                  } else {
+                    resolve(result);
+                  }
+                }
+              } catch(e) {
+                reject(e)
+              }
+              break;
+            case REJECT: 
+              try {
+                // 判断参数
+                if (!isFunction(onRejected)) {
+                  reject(value);
+                } else {
+                  const result = onRejected(value);
+                  // 判断是否是 promise
+                  if (result instanceof MyPromise) {
+                    result.then(resolve, reject);
+                  } else {
+                    reject(result);
+                  }
+                }
+              } catch (e) {
+                reject(e)
+              }
+              break;
+            }
+          }
+        }
+      }
+
+
+    // 一个 promise 上面绑定多个 then 方法
+    const promise1 = new Promise((resolve, reject) =>  {
+      setTimeout(() => {
+        resolve('延时两秒了!!!');
+      }, 2000)
+    });
+
+    promise1.then(function(val) {
+      console.log('注册的第一个 then：', val)
+      return '第一个 then 中的 return'
+    }).then(function(val) {
+      console.log(val)
+      return '第一个 then 后面的 then 的 return'
+    }).then(function(val) {
+      console.log(val)
+    })
+    promise1.then(function(val) {
+      console.log('注册的第二个 then：', val)
+    })
+
+
+  </script>
+</body>
+</html>
