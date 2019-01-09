@@ -53,10 +53,43 @@
 			e.target.style.border = '1px solid black'; // 被拖拽元素离开的时候样式重置
 		})
 
+		box1.addEventListener('dragend', function(e) {
+			console.log('dragend: ', e)
+			box2.style.border = '1px solid black'; // 被拖拽元素的鼠标松开的时候样式重置
+		})
+
+
 		box2.addEventListener('drop', function(e) {
+			e.preventDefault(); // 如果不阻止默认事件，默认的处理是将元素以链接形式打开。比如图片
 			console.log('drop: ', e)
 			var data = e.dataTransfer.getData("Text"); // 获取被拖拽元素中传递的数据
-			e.target.appendChild(document.getElementsByClassName(data)[0]);
+
+            if(data) {
+				e.target.appendChild(document.getElementsByClassName(data)[0]);
+            }
+
+			// 处理拖动文件到可放置元素中
+			var file = e.dataTransfer.files[0];
+            console.log(file);
+
+            if(file) {
+				//创建文件读取对象
+	            var fileReader = new FileReader();
+	            //给对象绑定load事件函数，当对象把路径下的数据读取完毕后，会触发该函数，从该函数中获取到读取的内容
+	            fileReader.onload = function(e){
+	                console.log('图片加读取完成！');
+	                //获取读取出来的图片数据
+	                var data = e.target.result;
+	             	console.log(data)
+	                //把图片数据暂存到浏览器中 
+	                box2.style.background = 'url('+data+') no-repeat';
+	                box2.style.backgroundSize = 'cover';
+	                box2.style.border = '1px solid black';
+	            }
+	            //让读取对象读取用户拖拽的文件的路径
+	            
+	            fileReader.readAsDataURL(file);
+            }
 		})
 
 
