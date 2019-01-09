@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.box1 {
+			width: 100px;
+			height: 100px;
+			background: red;
+		}
+	</style>
+</head>
+<body>
+	<div class="box1"></div>
+	<script>
+		// 单击事件的过程
+		// mousedown，mouseup，click
+		// 双击事件的过程
+		// mousedown，mouseup，click，mousedown，mouseup，click，dblclick 。
+
+		// 同时绑定单击事件和双击事件的问题：
+		// 双击事件触发前会触发两次单击事件，如果遇到 alert() 方法会阻塞双击事件的触发，alert 执行时会阻塞后面代码的执行和事件的触发
+		
+		const box1 = document.getElementsByClassName('box1')[0];
+
+		box1.addEventListener('click', function () {
+			console.log('我被单击了！！！')
+		});
+
+		box1.addEventListener('dblclick', function () {
+			console.log('我被双击了！！！')
+		});
+
+
+		// 解决方法：
+		// 处理给同一个元素绑定单击事件和双击事件冲突的问题
+		function handleClick() {
+			const box1 = document.getElementsByClassName('box1')[0];
+			let timer;
+
+			box1.addEventListener('click', function () {
+				if(timer) {
+					clearTimeout(timer);
+				}
+
+				timer = setTimeout(function() {
+					alert('我被单击了！！！')
+				}, 300);
+			});
+
+			box1.addEventListener('dblclick', function () {
+				clearTimeout(timer);
+				alert('我被双击了！！！')
+			});
+		}
+
+		handleClick()
+
+
+		
+		
+	</script>
+</body>
+</html>
