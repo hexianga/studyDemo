@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>框选</title>
+    <style>
+        
+
+    </style>
+
+</head>
+<body>
+
+    <script>
+
+        // 框选涉及的鼠标事件：mousedown mousemove mouseup click
+
+        function runSelectRect() {
+
+            //  鼠标是否按下
+            let mousedown = false
+
+            // 存放鼠标起始的位置
+            let startX;
+            let startY;
+
+            document.addEventListener('mousedown', function(e) {
+                console.log('mousedown')
+                mousedown = true
+
+                const selectedArea = document.createElement('div')
+                selectedArea.style.cssText = 'position: fixed; background: rgba(0,0,0,0.1); border: 1px solid black;'
+                selectedArea.id = 'selected-area'
+
+                // 存值
+                startX = e.clientX
+                startY = e.clientY
+
+                selectedArea.style.left = `${startX}px`
+                selectedArea.style.top = `${startY}px`
+
+                document.body.appendChild(selectedArea);
+            });
+
+            document.addEventListener('mousemove', function(e) {
+                console.log('mousemove')
+
+                // 只有鼠标按下之后才能获取到元素
+                if(mousedown) {
+                    const selectedArea = document.getElementById('selected-area')
+
+                    console.log(selectedArea)
+                    // selectedArea.style.width = `${e.clientX - startX}px`;
+                    // selectedArea.style.height = `${e.clientY - startY}px`;
+
+                    // 需要处理鼠标向上和向左拉的情况，此时 top 和 left 值需要改变
+                    selectedArea.style.width = `${Math.abs(e.clientX - startX)}px`
+                    selectedArea.style.height = `${Math.abs(e.clientY - startY)}px`
+                    selectedArea.style.left = `${Math.min(e.clientX, startX)}px`
+                    selectedArea.style.top = `${Math.min(e.clientY, startY)}px`
+
+                    console.log(e)
+                }
+                
+            });
+
+            document.addEventListener('mouseup', function() {
+                console.log('mouseup')
+
+                // 鼠标弹起之后应该移除元素并且鼠标按下标志重置
+                const selectedArea = document.getElementById('selected-area');
+                document.body.removeChild(selectedArea);
+                mousedown = false
+
+            });
+
+            document.addEventListener('click', function() {
+                console.log('click')
+            });
+
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                alert('右击了！！！！！')
+                console.log('contextmenu')
+            });
+        }
+
+        runSelectRect();
+        
+
+    </script>
+
+</body>
+</html>
