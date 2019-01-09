@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<style>
+		.box1 {
+			width: 100px;
+			height: 100px;
+			background: blue;
+		}
+
+		.box2 {
+			width: 200px;
+			height: 200px;
+			border: 1px solid black;
+			/*background: green;*/
+		}
+ 	</style>
+</head>
+<body>
+	<div class="box1" draggable="true" ></div>
+	<div class="box2" ></div>
+
+	<script>
+
+		// DataTransfer 对象：拖拽对象用来传递数据的对象，使用一般为 Event.dataTransfer。
+		// 属性：draggable，就是标签元素要设置 draggable=true，
+
+		// 拖放（Drag 和 drop）是 HTML5 标准的组成部分。 IE9+. (全部触发的都是 DragEvent 事件，继承自 MouseEvent)
+
+		// 拖动事件：dragstart(在按住鼠标开始拖动时候触发（触发一次）) -> drag(在按住鼠标拖动的过程触发（持续触发）) -> dragend(在释放鼠标后触发)
+		// 放置事件：dragenter -> dragover -> drop
+		// 元素被拖出了放置目标：dragleave
+
+		// 简单拖拽
+		const box1 = document.getElementsByClassName('box1')[0];
+		const box2 = document.getElementsByClassName('box2')[0];
+
+		box1.addEventListener('dragstart', function(e) {
+			console.log('dragstart', e)
+			e.dataTransfer.setData('Text', e.target.className) // 传递数据到要放置的元素
+		});
+
+		box2.addEventListener('dragover', function(e) {
+			e.preventDefault() //默认无法将数据/元素放置到其他元素中。如果需要设置元素允许放置，我们必须阻止对元素的默认处理方式。
+			e.target.style.border = '3px solid red'; // 被拖拽元素到上方的时候改变样式
+		})
+
+		box2.addEventListener('dragleave', function(e) {
+			console.log('dragleave: ', e)
+			e.target.style.border = '1px solid black'; // 被拖拽元素离开的时候样式重置
+		})
+
+		box2.addEventListener('drop', function(e) {
+			console.log('drop: ', e)
+			var data = e.dataTransfer.getData("Text"); // 获取被拖拽元素中传递的数据
+			e.target.appendChild(document.getElementsByClassName(data)[0]);
+		})
+
+
+
+		
+
+		
+	</script>
+</body>
+</html>
