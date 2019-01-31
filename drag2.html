@@ -1,0 +1,53 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  	<meta charset="UTF-8">
+  	<title>Document</title>
+  	<style>
+
+		div {
+			color: green;
+			font-size: 20px;
+		    position: relative;
+		    display: inline
+		}
+
+  	</style>
+  </head>
+  <body>
+  	<div id="drag">fbirwbgiwrbgw</div>
+
+  	<script>
+		
+		window.onload = function() {
+			var drag = document.getElementById('drag');
+
+		 
+			drag.onmousedown = function(e) {
+				var diffY = e.clientY - drag.offsetTop;
+
+				document.onmousemove = function(e) {
+					var top=e.clientY-diffY;
+					
+					if(top<0){
+						top=0;
+					}else if(top >window.innerHeight-drag.offsetHeight){
+						top = window.innerHeight-drag.offsetHeight;
+					}
+		 
+					drag.style.top = top + 'px';
+				};
+				
+				document.onmouseup = function(e) {
+					this.onmousemove = null;
+					this.onmouseup = null;
+				};
+			};
+
+
+		};
+
+
+  	</script>
+  </body>
+  </html>

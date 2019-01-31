@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<button onclick="add()">新增</button>
+	<button onclick="remove()">删除</button>
+	<button onclick="update()">更新</button>
+	<button onclick="search()">查找</button>
+	<button onclick="indexSearch()">根据索引查找</button>
+	
+
+	<script>
+		// 文档
+		// https://www.cnblogs.com/dolphinX/p/3415761.html
+		// http://www.ruanyifeng.com/blog/2018/07/indexeddb.html
+
+
+		// indexdDB 的生命周期
+		// 类似于 localstorage 永远存在，除非手动删除
+
+		// IDBOpenDBRequest 数据库打开请求对象
+		var request = window.indexedDB.open('databaseName', 99);
+		var db;
+
+		// 表的创建一般执行一次
+		request.onerror = function (event) {
+		  console.log('数据库打开报错');
+		};
+
+		request.onsuccess = function (event) {
+		  db = request.result;
+		  console.log('数据库打开成功', db)
+		};
+
+		// 如果指定的版本号，大于数据库的实际版本号，就会发生数据库升级事件upgradeneeded，然后才会触发 success 事件
+		request.onupgradeneeded = function (event) {
+		  console.log('数据库升级')
+		  db = event.target.result;
+		  var objectStore;
+		  if (!db.objectStoreNames.contains('person')) {
+		  	// 指定某个属性作为主键
+		    objectStore = db.createObjectStore('person', { keyPath: 'id' });
+		    // 不指定属性，使用自增的整数
+		    // objectStore = db.createObjectStore('person', { autoIncrement: true });
+		    
+		    // 创建索引
+		    // 第一个参数是索引名
+		    // 第二个参数是索引对应的属性
+		    // 第三个参数决定索引值是否像主键一样唯一
+		    objectStore.createIndex('indexName', 'name', { unique: false });
+		  }
+
+		}
+
+		// 写入数据
+		var id = 0;
+		function add () {
+
+			var request = db.transaction(['person'], 'readwrite')
+			    .objectStore('person')
+			    .add({ id: id, name: '张三', age: 24, email: 'zhangsan@exampl.com' });
+			id ++;
+
+			request.onsuccess = function (event) {
+				console.log('数据写入成功');
+			};
+
+			request.onerror = function (event) {
+				console.log('数据写入失败', event);
+			}
+
+		}
+
+
+		// 查找数据 根据索引查找数据
+		function search() {
+		   var transaction = db.transaction(['person']);
+		   var objectStore = transaction.objectStore('person');
+		   var request = objectStore.get(0);
+
+		   request.onerror = function(event) {
+		     console.log('事务失败');
+		   };
+
+		   request.onsuccess = function( event) {
+		      if (request.result) {
+		        console.log('Name: ' + request.result.name);
+		        console.log('Age: ' + request.result.age);
+		        console.log('Email: ' + request.result.email);
+		      } else {
+		        console.log('未获得数据记录');
+		      }
+		   };
+		}
+
+		// 更新数据 根据索引更新数据
+		function update() {
+		  var request = db.transaction(['person'], 'readwrite')
+		    .objectStore('person')
+		    .put({ id: 2, name: '李四', age: 35, email: 'lisi@example.com' });
+
+		  request.onsuccess = function (event) {
+		    console.log('数据更新成功');
+		  };
+
+		  request.onerror = function (event) {
+		    console.log('数据更新失败');
+		  }
+		}
+
+		// 删除数据 根据索引删除数据
+		function remove() {
+		  var request = db.transaction(['person'], 'readwrite')
+		    .objectStore('person')
+		    .delete(1);
+
+		  request.onsuccess = function (event) {
+		    console.log('数据删除成功');
+		  };
+		}
+
+		// 根据索引查找
+		function indexSearch() {
+			// 获取事物对象  IDBTransaction
+			var transaction = db.transaction(['person'], 'readonly')
+			// 获取对象仓库 IDBObjectStore 对象, 类似一张表
+			var store = transaction.objectStore('person');
+			// 获取索引对象 IDBIndex
+			var index = store.index('indexName');
+			// 获取操作请求对象 IDBRequest
+			// 如果索引值可以重复，那么就只会拿到第一个值
+			var request = index.get('张三');
+
+			request.onsuccess = function (e) {
+			  var result = e.target.result
+			  console.log('indexSearch', result)
+			}
+		}
+
+
+
+
+
+	</script>
+</body>
+</html>

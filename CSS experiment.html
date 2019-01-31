@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+
+		ul {
+			display: flex;
+		}
+		
+		li{
+			list-style: none;
+			padding: 10px 20px;
+			position: relative;
+			line-height: 1;
+		}
+
+
+		li::after {
+			content: '';
+			position: absolute;
+			bottom: 0;
+			height: 3px;
+			left: 100%;
+			width: 0;
+			background: red;
+			transition: .2s all linear;
+		} 
+
+		li:hover::after {
+			transition-delay: .2s;
+			width: 100%;
+			left: 0;
+		}
+
+		li:hover ~ li::after {
+			left: 0;
+		}
+
+
+
+	#test {
+		color:red;
+	}
+	</style>
+</head>
+<body>
+
+	<div id="test">TEST</div>
+<script>
+	var div = document.getElementsByTagName('div');
+	alert(div[0].style.cssText += "font-size: 34px");
+</script>
+	<ul>
+	  <li>不可思议的CSS</li>
+	  <li>导航栏</li>
+	  <li>光标小下划线跟随</li>
+	  <li>PURE CSS</li>
+	  <li>Nav Underline</li>
+	</ul>
+
+	<script>
+
+	</script>
+</body>
+</html>

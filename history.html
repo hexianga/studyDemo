@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+
+	<script>
+		// popstate 事件的触发时机
+		// 只有浏览器的 前进后退，history 的 go, back, forward 方法会触发
+		// hashchange 事件发生的时候也会触发 popstate，每次 hashchange 发生相当于先调用了 forward
+		// 如果当前活动的历史记录项是被 pushState 创建的，或者是由 replaceState 改变的，那么 popstate 事件的状态属性 state 会包含一个当前历史记录状态对象的拷贝。
+
+		// 添加 popState 的监听
+		 window.addEventListener('popstate', function(e) {
+		 	console.log('popstate 事件触发了！！！！', e)
+		 })
+
+
+		 // hashchange 的触发时机
+		 // hash 值发生变化的时候，但是 pushState 引起的 hash 值发生变化除外
+		 window.addEventListener('hashchange', function(e) {
+		 	console.log('hashchange 事件触发了！！！！', e)
+		 })
+
+
+		// pushState(state, title, url) 方法：改变浏览器历史记录的条目
+		// title: 一般为空字符串
+		// url：新 URL 必须与当前 URL 同源，否则 pushState() 会抛出一个异常
+		// replaceState：修改当前的历史记录项，但时条目数一样会增1
+		// 读取当前历史记录项的状态对象state：history.state
+		 const history = window.history;
+
+		 history.pushState({param: '我是 history state 中的数据'}, '', '#test')
+
+		 setTimeout(function() {
+		 	history.replaceState({param: '改变了 history state 中的数据'}, '', '#change')
+		 }, 1000)
+
+		 setTimeout(function() {
+		 	window.location = '#location'
+		 }, 2000)
+
+		 setTimeout(function() {
+		 	history.pushState({param: '使用 replaceState 方法'}, '', '#replaceState')
+		 }, 3000)
+
+
+		 
+
+
+		 // pushState 和 window.location 有什么区别呢？？
+		 // 相同：都会在当前页面创建并激活新的历史记录，pushState 的第三个参数和 window.location 的值设置方式相同
+		 // 不同： 
+		 // 1. window.location 只有在修改 hash 的时候才不会引起页面重新加载
+		 // 2. 方便地为新的历史记录项关联数据，如果是 hash 则只能用短字符串的形式
+		
+
+	</script>
+</body>
+</html>

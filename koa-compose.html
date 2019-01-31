@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+
+		function fn1 (ctx, next) {
+			console.log('这是第一个函数')
+			next();
+			console.log('这是第一个函数')
+		}
+		function fn2 (ctx, next) {
+			console.log('这是第二个函数')
+			next();
+			console.log('这是第二个函数')
+		}
+		function fn3 (ctx, next) {
+			console.log('这是第三个函数')
+			next();
+			console.log('这是第三个函数')
+		}
+		function lastFn (ctx, next) {
+			console.log('这是最后执行的函数！！！')
+		}
+
+
+
+		const middleware = [fn1, fn2, fn3]
+
+		function compose(context, next) {
+		    let index = -1
+
+		    function dispatch (i) {
+		      if (i <= index) return Promise.reject(new Error('next() called multiple times'))
+		      index = i
+		  	  // 获得当前的中间件函数
+		      let fn = middleware[i]
+		      // 执行到了最后一个中间件函数
+		      if (i === middleware.length) {
+		      	fn = next
+		      }
+		      // 如果当前的中间件函数不存在就返回。(没有 next 时中间件函数数组中的函数执行完了就没有了，如果有就还要执行 next)
+		  	  // 函数组合后形成的其实就是一个栈，先入栈的函数先执行，然后后面的函数依次入栈，执行完了在依次出栈
+		  	  // 其实很类似递归
+		  	  // 其实就是一种递归！！！！！
+		      if (!fn) {
+		      	return Promise.resolve()
+		      }
+		      try {
+		      	// 其实就是一种递归！！！！！自己内部调用了自己！！！！
+		        return Promise.resolve(fn(context, dispatch.bind(null, i + 1)));
+		      } catch (err) {
+		        return Promise.reject(err)
+		      }
+		    }
+
+		    return dispatch(0)
+
+		  }
+
+		const composedFn = compose({}, lastFn)
+	</script>
+	
+</body>
+</html>

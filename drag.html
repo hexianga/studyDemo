@@ -18,14 +18,16 @@
 			/*background: green;*/
 		}
  	</style>
+
 </head>
 <body>
+	
 	<div class="box1" draggable="true" ></div>
 	<div class="box2" ></div>
 
 	<script>
 
-		// DataTransfer 对象：拖拽对象用来传递数据的对象，使用一般为 Event.dataTransfer。
+ 		// DataTransfer 对象：拖拽对象用来传递数据的对象，使用一般为 Event.dataTransfer。
 		// 属性：draggable，就是标签元素要设置 draggable=true，
 
 		// 拖放（Drag 和 drop）是 HTML5 标准的组成部分。 IE9+. (全部触发的都是 DragEvent 事件，继承自 MouseEvent)
@@ -91,6 +93,28 @@
 	            fileReader.readAsDataURL(file);
             }
 		})
+
+
+		// 自定义事件和触发事件
+
+		box1.addEventListener('mouseenter', function(e) {
+			console.log('代码控制触发内置事件', e)
+		});
+
+
+		console.log(box1);
+		
+		// box1.mouseenter();
+
+		setTimeout(function() {
+			const click = new MouseEvent('click')
+			box1.dispatchEvent(click)
+		}, 2000)
+
+		
+			
+
+
 
 
 
