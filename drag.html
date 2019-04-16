@@ -26,9 +26,14 @@
 	<div class="box2" ></div>
 
 	<script>
+		// 基础教程：https://www.cnblogs.com/zichi/p/5080147.html
+		// 注意: 为了更定制化的效果，可以使用最基础的鼠标事件来模拟拖拽
+
 
  		// DataTransfer 对象：拖拽对象用来传递数据的对象，使用一般为 Event.dataTransfer。
 		// 属性：draggable，就是标签元素要设置 draggable=true，
+		// 页面中的图片（img）、链接（带 href 的 a 标签）以及文本默认即为可拖动。为了统一，最好还是都加上该 draggable 属性为好。
+
 
 		// 拖放（Drag 和 drop）是 HTML5 标准的组成部分。 IE9+. (全部触发的都是 DragEvent 事件，继承自 MouseEvent)
 
@@ -110,6 +115,8 @@
 			const click = new MouseEvent('click')
 			box1.dispatchEvent(click)
 		}, 2000)
+
+
 
 		
 			

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<input type="text" id="input1">
+	<input type="text" id="input2">
+
+	<button onclick="FFFocus()">按钮</button>
+
+	<script>
+		const input1 = document.querySelector('#input1')
+		const input2 = document.querySelector('#input2')
+
+		window.onload = function () {
+			input1.focus()
+		}
+
+		function FFFocus() {
+			input2.focus()
+		}
+
+
+	</script>
+</body>
+</html>

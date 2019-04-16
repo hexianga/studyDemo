@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<style>
+		.box {
+			height: 100px;
+			width: 900px;
+			border: 1px solid red;
+			margin: 10px;
+			padding: 20px;
+		}
+		.box-child-1 {
+			height: 40px;
+			width: 300px;
+			border: 1px solid blue;
+			margin: 10px;
+		}
+		.box-child-2 {
+			height: 20px;
+			width: 200px;
+			border: 1px solid orange;
+			margin-top: 10px;
+		}
+		.box-child-1-2 {
+			height: 20px;
+			width: 100px;
+			border: 1px solid green;
+		}
+	</style>
+	
+</head>
+<body>
+	<div class="wrapper">
+		<div class="box">
+			box
+			<div class="box-child-1">
+				box
+				<div class="box-child-1-2">box-child-1-2</div>
+			</div>
+			<div class="box-child-2"></div>
+		</div>
+		<div class="box">
+			box
+			<div class="box-child-1">
+				box-child-1
+				<div class="box-child-1-2">box-child-1-2</div>
+			</div>
+			<div class="box-child-2"></div>
+		</div>
+		<div class="box">
+			box
+			<div class="box-child-1">
+				box-child-1
+				<div class="box-child-1-2">box-child-1-2</div>
+			</div>
+			<div class="box-child-2"></div>
+		</div>
+		<div class="box">
+			<div class="box-child-1">
+				<div class="box-child-1-2"></div>
+			</div>
+			<div class="box-child-2"></div>
+		</div>
+		<div class="box">
+			<div class="box-child-1">
+				<div class="box-child-1-2"></div>
+			</div>
+			<div class="box-child-2"></div>
+		</div>
+	</div>
+
+	<script>
+		const wrapper = document.querySelector('body')
+
+		let deepTraversal1 = (node, nodeList = []) => {
+		  if (node !== null) {
+		    nodeList.push(node)
+		    let children = node.children
+		    for (let i = 0; i < children.length; i++) {
+		      deepTraversal1(children[i], nodeList)
+		    }
+		  }
+		  return nodeList
+		}
+
+		let deepTraversal2 = (node) => {
+	    let nodes = []
+	    if (node !== null) {
+	      nodes.push(node)
+	      let children = node.children
+	      for (let i = 0; i < children.length; i++) {
+	        nodes = nodes.concat(deepTraversal2(children[i]))
+	      }
+	    }
+	    return nodes
+	  }
+
+	  // 非递归
+	let deepTraversal3 = (node) => {
+	  let nodes = []
+	  if (node) {
+	  	let stack = []
+	    stack.push(node)
+
+	    // 借住栈来实现：始终操作这一个栈，关键点就在什么时候入栈，什么时候出栈
+	    // 核心的思想就是：每一次遍历的时候将最后一个元素出栈，然后把它的子元素入栈。从而实现深度优先遍历
+
+	    while (stack.length) {
+	      console.log(stack)
+	      // 每次处理第一个元素
+	      let item = stack.pop()
+	      // 出栈的时候放到数组中去
+	      nodes.push(item)
+	      // 将当前元素的子元素放到数组中
+	      let children = item.children
+	      // 如果没有子元素，就返回处理当前元素的下一个兄弟元素
+	      for (let i = children.length - 1; i >= 0; i--) {
+	        stack.push(children[i])
+	      }
+	    }
+	  }
+	  return nodes
+	}
+
+	 let widthTraversal2 = (node) => {
+	  let nodes = []
+	  let queue = []
+	  if (node) {
+	    queue.push(node)
+
+	    // 思想：广度优先借助队列实现
+	    // 什么时候入队列？什么时候出队列？每一次遍历的时候，元素出队列，子元素按序入队列
+
+	    while (queue.length) {
+	    	console.log(queue)
+	      let item = queue.shift()
+	      let children = item.children
+	      nodes.push(item)
+	      for (let i = 0; i < children.length; i++) {
+	        queue.push(children[i])
+	      }
+	    }
+	  }
+	  return nodes
+	}
+
+
+
+		// console.log(deepTraversal1(wrapper))
+
+		// console.log(deepTraversal2(wrapper))
+
+		// console.log(deepTraversal3(wrapper))
+
+		console.log(widthTraversal2(wrapper))
+	</script>
+</body>
+</html>

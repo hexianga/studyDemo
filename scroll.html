@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- scroll事件研究: https://blog.csdn.net/jhqdlove/article/details/52034550 -->
+	<!-- 一个元素只有在出现了滚动条的时候，绑定滚动事件才会生效 -->
+	<style>
+		body {
+			height: 2000px;
+		}
+
+		div {
+		    border: 1px solid black;
+		    width: 200px;
+		    height: 200px;
+		    text-align: center;
+		    overflow: auto;/*更改此处*/
+		}
+		/* 设置滚动条的样式 */
+		::-webkit-scrollbar {
+			width:12px;
+		}
+		/* 滚动槽 */
+		::-webkit-scrollbar-track {
+			box-shadow:inset 0 0 6px rgba(0,0,0,0.3);
+			border-radius:10px;
+		}
+		/* 滚动条滑块 */
+		::-webkit-scrollbar-thumb {
+			border-radius: 10px;
+			background: rgba(0,0,0,0.1);
+			box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+		}
+
+	</style>
+</head>
+<body onscroll="bodyScroll()">
+    <div>
+	    	In my younger
+	    <br>In my younger
+	    <br>In my younger
+	    <br>In my younger
+	    <br>In my younger
+	    <br>In my younger
+	    <br>In my younger
+	    <br>
+	</div>
+	<p>div滚动 
+		<span id="demo">0</span> 次。页面滚动
+		 <span id="demo1">0</span></p>
+
+
+	<div id="box" onscroll="divScroll()">In my younger <br>In my younger <br>In my younger <br>In my younger <br>In my younger <br>In my younger <br>In my younger <br>
+    In my younger <br>In my younger <br>In my younger <br>In my younger <br>In my younger <br>
+    In my younger <br>In my younger <br>In my younger <br>In my younger <br>In my younger <br>
+    In my younger <br>In my younger <br>In my younger <br>In my younger <br>In my younger <br>
+    In my younger <br>In my younger <br>In my younger <br>In my younger <br>In my younger <br></div>
+
+	<button onclick='addEvent()'>绑定事件</button>
+	<script>
+	x = 0;
+	function divScroll() {
+	    document.getElementById("demo").innerHTML = x += 1;
+	}
+	    y = 0;
+	function bodyScroll() {
+	    document.getElementById("demo1").innerHTML = y += 1;
+	}
+
+	function addEvent () {
+		const box = document.querySelector('#box')
+		box.addEventListener('scroll', function () {
+			console.log('---------')
+		})
+	}
+
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+  <title>Document</title>
+  <style>
+
+  </style>
+<body>
+
+    <button onclick="clickMe()">点我发布数据</button>
+</body>
+
+  <script>
+
+    // 写一个观察者模式
+    let observable = {};
+    observable.listenerList = []; // 存放监听器函数的列表
+
+    observable.subscribe = function (fn) { // 注册监听器函数的方法
+      this.listenerList.push(fn);
+    }
+
+    observable.publish = function() { // 发布数据时通知所有的注册方法执行
+      for (let i = 0, fn; fn = this.listenerList[i++]; ) {
+        fn.apply(this, arguments)
+      }
+    }
+
+    // 测试可观察对象
+    observable.subscribe(function(data) {
+      console.log('我是第一个注册的监听器函数')
+    });
+
+    observable.subscribe(function(data) {
+      console.log('我是第二个注册的监听器函数')
+    });
+
+    observable.subscribe(function(data) {
+      console.log('我是第三个注册的监听器函数')
+    });
+
+    function clickMe() {
+      observable.publish('data');
+    }
+    
+
+
+
+    // 写一个单例模式
+    function CreateSingleton() {
+      let instance; // 通过该变量来保存实例
+
+      function create(name) {
+        if (instance) { // 引用 instance，形成闭包
+          return instance;
+        }
+
+        this.name = name;
+
+        instance = this;
+        return this;
+      }
+
+      return create;
+    }
+
+    const Single = CreateSingleton();
+
+    const div1 = new Single('dasasas');
+    const div2 = new Single('sasasasa');
+
+    console.log(div1.name, div2.name, div1 === div2);
+
+
+
+  </script>
+</html>

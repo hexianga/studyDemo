@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+
+	<script>
+		// 获取一个对象指定的属性对应的值	
+		function getSpecificKeysObj (object, keyArr) {
+		  // 一个方法出于规范使用，需要限定参数类型
+		  if (!Array.isArray(keyArr)) {
+		    throw new Error('keyArr must is a Array!!')  
+		  }
+
+		  return keyArr.reduce((obj, key) => {
+
+		  	// 通过变量访问属性，必须通过中括号的形式访问
+		  	// 如果以 点 进行访问，则会将点后面的解析为字符串
+
+		  	// 如何判断一个对象存在某个属性
+		   	if (typeof object[key] !== undefined) {
+		      obj[key] = object[key]
+		    }
+		    return obj
+		  }, {})
+		}
+
+		const obj = {
+			name: 'tobi',
+			last: 'holowaychuk',
+			email: 'tobi@learnboost.com',
+			1: '',
+			2: 0,
+			_id: '12345',
+		}
+
+		keysArrOne = ['name', 'last', 'email', '_id', 1, 2]
+
+		const resultOne = getSpecificKeysObj(obj, keysArrOne)
+		console.log(resultOne)
+
+
+		// 返回一个对象除了指定属性外其它属性的值。
+
+	    function getIgnoreSpecificKeysObj(object, keyArr) {
+	    	// 规范使用方法，	需限定参数
+	        if (!Array.isArray(keyArr)) {
+			   throw new Error('keyArr must is a Array!!')  
+			}
+
+			return Object.keys(obj).reduce((obj, key) => {
+				if (!keyArr.includes(key)) {
+					obj[key] = object[key]
+				}
+				return obj
+			}, {})
+	    }
+
+	    keysArrTwo = ['name', '_id']
+
+		const resultTwo = getIgnoreSpecificKeysObj(obj, keysArrTwo)
+		console.log(resultTwo)
+
+
+
+    
+
+	</script>
+</html>

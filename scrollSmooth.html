@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+  <!--使用 腻子脚本-->
+  <script src="./smoothscroll.min.js"></script>
+  <script>
+    window.__forceSmoothScrollPolyfill__ = true;
+    function scrol() {
+      window.scrollTo({
+        top: 1000,
+        behavior: "smooth",
+      })
+    }
+  </script>
+</head>
+<body>
+	<!--
+	如何实现平滑滚动？？
+	1. 使用 hash 无法实现平滑滚动，只能实现立即滚动
+	2. window.scrollTo + 参数实现平滑滚动 behavior: "smooth" 其实 scroll 和 scrollTo 这两个方法是一样的，参数也一样
+  3. 给 html 应用 scroll-behavior 属性
+  4. setInterval 来实现页面的平滑滚动 但是页面会抖动
+
+  所以最终的方案：window.scrollTo + 腻子脚本  https://github.com/iamdustan/smoothscroll
+
+
+  兼容性问题：window.scrollTo 和  scroll-behavior 属性在 safari 上面都不支持，在 IE 上也不支持
+
+
+	-->
+  <button onclick="scrol()">平滑滚动</button>
+  <a href="#poetry6">滚动到最后一首诗</a>
+
+	<div id="poetry1" class="shici-container www-shadow-card">
+       <h1 class="shici-title">菩萨蛮·宝函钿雀金鹦鹏</h1>
+       <div class="shici-info">
+           [唐] <a href="/chaxun/zuozhe/27.html">温庭筠</a>
+       </div>
+       <div class="shici-content">
+           宝函钿雀金鹦鹏，<br>沉香阍上吴山碧。<br>杨柳又如丝，<br>驿桥春雨时。<br>画楼音信断，<br>芳草江南岸。<br>鸾镜与花枝，<br>此情谁得知。
+       </div>
+        <div class="line2"></div>
+        <div class="shangxi-container">
+                【注释】：<br>此首，起句写入妆饰之美，次句写人登临所见春山之美，亦“泰日凝妆上翠楼”之起法。“杨柳”两句承上，写春水之美，仿佛画境。晓来登高骋望，触目春山春水，又不能已于兴咸。一“又”字，传惊叹之神，且见相别之久，相忆之深。换头，说明人去信断。末两句，自伤苦忆之情，无人得知。以美艳加花之人，而<br>独处凄寂，其幽怨深矣。“此情”句，千回百转，哀思洋溢。<br>唐圭璋 《唐宋词简释》<br>
+        </div>
+   </div>
+
+   <div id="poetry2" class="shici-container www-shadow-card">
+       <h1 class="shici-title">菩萨蛮·凤凰相对盘金缕</h1>
+       <div class="shici-info">
+           [唐] <a href="/chaxun/zuozhe/27.html">温庭筠</a>
+       </div>
+       <div class="shici-content">
+           凤凰相对盘金缕，<br>牡丹一夜经微雨。<br>明镜照新妆，<br>鬓经双脸长。<br>画楼相望久，<br>栏外垂丝柳。<br>音信不归来，<br>社前双燕回。
+       </div>
+        <div class="line2"></div>
+        <div class="shangxi-container">
+                【注释】：<br><br>
+        </div>
+   </div>
+
+   <div id="poetry3" class="layui-col-md8 layui-col-sm7">
+	   <div class="shici-container www-shadow-card">
+	       <h1 class="shici-title">菩萨蛮·满宫明月梨花白</h1>
+	       <div class="shici-info">
+	           [唐] <a href="/chaxun/zuozhe/27.html">温庭筠</a>
+	       </div>
+	       <div class="shici-content">
+	           满宫明月梨花白，<br>故人万里关山隔。<br>金雁一双飞，<br>泪痕沾绣衣。<br>小园芳草绿，<br>家住越溪曲。<br>杨柳色依依，<br>燕归君不归。?
+	       </div>
+	        <div class="line2"></div>
+	        <div class="shangxi-container">
+	                【注释】：<br><br>
+	        </div>
+	   </div>
+	</div>
+
+	<div id="poetry4" class="layui-col-md8 layui-col-sm7">
+       <div class="shici-container www-shadow-card">
+           <h1 class="shici-title">菩萨蛮·南园满地堆轻絮</h1>
+           <div class="shici-info">
+               [唐] <a href="/chaxun/zuozhe/27.html">温庭筠</a>
+           </div>
+           <div class="shici-content">
+               南园满地堆轻絮，<br>愁闻一霎清明雨。<br>雨后却斜阳，<br>杏花零落香。<br>无言匀睡脸，<br>枕上屏山掩。<br>时节欲黄昏，<br>无□独倚门。?
+           </div>
+            <div class="line2"></div>
+            <div class="shangxi-container">
+                    【注释】：<br><br>
+            </div>
+       </div>
+    </div>
+
+    <div id="poetry5" class="shici-container www-shadow-card">
+       <h1 class="shici-title">菩萨蛮·水精帘里颇黎枕</h1>
+       <div class="shici-info">
+           [唐] <a href="/chaxun/zuozhe/27.html">温庭筠</a>
+       </div>
+       <div class="shici-content">
+           水精帘里颇黎枕，<br>暖香惹梦鸳鸯锦。<br>江上柳如烟，<br>雁飞残月天。<br>藕比丝秋色浅，<br>人胜参差剪。<br>双鬓隔香红，<br>玉钗头上风。
+       </div>
+        <div class="line2"></div>
+        <div class="shangxi-container">
+                【注释】：<br><br>
+        </div>
+   </div>
+
+   <div id="poetry6" class="shici-container www-shadow-card">
+       <h1 class="shici-title">菩萨蛮·小山重叠金明灭</h1>
+       <div class="shici-info">
+           [唐] <a href="/chaxun/zuozhe/27.html">温庭筠</a>
+       </div>
+       <div class="shici-content">
+           小山重叠金明灭，<br>鬓云欲度香腮雪。<br>懒起画蛾眉，<br>弄妆梳洗迟。<br>照花前后镜，<br>花面交相映。<br>新帖绣罗襦，<br>双双金鹧鸪。
+       </div>
+        <div class="shici-mark">
+            分类标签:
+                <a href="/shicimark/guiyuanshi.html" target="_blank">闺怨诗</a>
+                <a href="/shicimark/wanyueshi.html" target="_blank">婉约诗</a>
+        </div>
+        <div class="line2"></div>
+        <div class="shangxi-container">
+                    【注释】<br><br>    ①小山：指屏风上雕画的小山。金明灭：金光闪耀的样子。<br>
+          ②鬓云：象云朵似的鬓发。度：覆盖。香腮雪：雪白的面颊。<br>    ③弄妆：梳妆打扮。<br>    ④罗襦：丝绸短袄。<br>    ⑤鹧鸪：这里指装饰的图案。<br><br>    【评解】<br><br>    这首《菩萨蛮》，为了适应宫廷歌伎的声口，也为了点缀皇宫里的生活情趣，把妇<br>
+          女的容貌写得很美丽，服饰写得很华贵，体态也写得十分娇柔。仿佛描绘了一帽唐代仕<br>女图。<br>
+          词的上片，写床前屏风的景色及梳洗时的娇慵姿态；下片写妆成后的情态，暗示了<br>
+          人物孤独寂寞的心境。全词委婉含蓄地揭示了人物的内心世界，并成功地运用反衬手法。<br>
+          鹧鸪双双，反衬人物的孤独；容貌服饰的描写，反衬人物内心的寂寞空虚。表现了作者<br>
+          的词风和艺术成就。<br><br>    【集评】<br><br>    <a href="/chaxun/zuozhe/740.html" target="_blank">
+          张惠言</a>《词选》卷一：此感士不遇之作也。篇法仿佛《长门赋》，而用节节逆叙。<br>
+          此章从梦晓后领起“懒起”二字，含后文情事。“照花”四句，《离骚》初服之意。<br>
+          陈廷焯《白雨斋词话》卷一：飞卿词如“懒起画娥眉，弄妆梳洗迟”，无限伤心，<br>溢于言表。<br>
+          张燕瑾《唐宋词选析》：这首《菩萨蛮》不仅称物芳美，也具有“其文约，其词微”<br>的特点，富有暗示性，容易使人产生种种联想。<br>
+          《中国历代诗歌各篇赏析》：在这首词里，作者将许多可以调和的颜色和物件放在<br>
+          一起，使它们自己组织配合，形成一个意境，一个画面，让读者去领略其中的情意，这<br>
+          正是作者在创造词的意境上，表现了他的独特的手法。<br>
+          唐圭璋 《唐宋词简释》：此首写闺怨，章法极密，层次极清。首句，写绣屏掩映，可见环境之富丽；
+          次句，写鬓丝撩乱，可见人未起之容仪。三、四两句叙事，画眉梳洗，皆事也。然“懒”字、“迟”字，又兼写人之情态。“照花”两句承上，言梳洗停当，簪花为饰，愈增艳丽。末句，言更换新绣之罗衣，忽税衣上有鹧鸪双双，遂兴孤独之哀与膏沐谁容之感。有此收束，振起全篇。上文之所以懒画眉、迟梳洗者，皆因有此一段怨情蕴蓄于中也。<br>
+        </div>
+   </div>
+
+</body>
+</html>

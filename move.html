@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		html {
+			/* 使得当前 html 的高度和 document 一样，也就是浏览器的内容区域 */
+			height: 100%;
+		}
+
+		body {
+			margin: 0;
+		}
+
+		div {
+			display: inline-block;
+		}
+
+		.box {
+			width: 100px;
+			height: 9000px;
+			padding: 20px;
+			margin: 0;
+			margin: 40px;
+			border: 20px solid red;
+			background: blue;
+		}
+		/* 元素默认使用的是 content-box */
+
+		.box2 {
+			float: left;
+			display: none;
+		}
+
+		.box3 {
+			height: 500px;
+			overflow: auto;
+			float: right;
+		}
+	</style>
+</head>
+<body>
+	<div class="box" draggable="true" data-data1="data1" data-data2="data2">wqwqwq</div>
+	<div class="box2">我是右键弹出菜单</div>
+	<!-- 使用自定义数据属性 data- 可以使 js 和 html 进行良好的数据交互，兼容性良好 -->
+	
+	<div class="box3">
+		<div class="box" draggable="true" data-data1="data1" data-data2="data2">424343434343</div>
+	</div>
+	<script>
+		let isdblclick = false
+
+		const box = document.querySelector('.box')
+		box.onmousedown = function (e) {
+			/* 鼠标移动事件可以指定某个元素绑定，类似，既然 document 上面可以绑定的事件，在某个元素上面也是可以绑定的*/
+			document.onmousemove = function (e) {
+				console.log(e, {
+					/* 鼠标在显示器中的位置，几乎不会用到 */
+					'screenX': e.screenX,
+					'screenY': e.screenY,
+
+					/* 鼠标在浏览器内容展示区中的位置 */
+					'clientX': e.clientX,
+					'clientY': e.clientY,
+
+					/* 鼠标在文档中的位置，当没有出现横向滚动条和竖向滚动条的时候和 client 相同 */
+					'pageX': e.pageX,
+					'pageY': e.pageY,
+
+					/* 鼠标在目标元素内容区域(content + padding)中的位置，相对于 padding 区域最上边和最左边的线。实验属性，但是兼容性良好*/
+					'offsetX': e.offsetX,
+					'offsetY': e.offsetY,
+
+					/* 非标准属性，值和 page 相同，获得的是鼠标在当前层的位置, 不建议使用*/
+					'layerX': e.layerX,
+					'layerY': e.layerY,
+
+					/*  client 的别名，实验属性 */
+					'X': e.x,
+					'Y': e.y,
+
+				})
+			}
+			box.onmouseup = function () {
+				box.onmousemove = null;
+			}
+		}
+		box.onclick = (e) => {
+			setTimeout(handleClick, 300)
+		}
+
+
+		function handleClick (e) {
+			if (isdblclick) return;
+			// 兼容性都良好
+			// console.log(e, {
+			// 		// Element 的属性
+			// 		/* 获得元素的宽高(padding + content) */
+			// 		'clientHeight': box.clientHeight,
+			// 		'clientWidth': box.clientWidth,
+			// 		/* 元素上边框和左边框的高度 */
+			// 		'clientLeft': box.clientLeft,
+			// 		'clientTop': box.clientTop,
+			// 	}, {
+			// 		// HTMLElement 的属性
+			// 		/* 元素的宽高 (content + padding + border)*/
+			// 		'offsetHeight': box.offsetHeight,
+			// 		'offsetWidth': box.offsetWidth,
+
+			// 		 // 元素相对父元素偏移的距离，其实就是 marginleft 和 margintop 
+			// 		'offsetLeft': box.offsetLeft,
+			// 		'offsetTop': box.offsetTop,
+
+			// 		'offsetParent': box.offsetParent,
+			// 	}, {
+			// 		// Element 的属性
+			// 		/* 获得元素内容的宽高，包括内容溢出的不可见部分*/
+			// 		'scrollWidth': box.scrollWidth,
+			// 		'scrollHeight': box.scrollHeight,
+			// 		/* 获得目标元素中内容向左滚动的距离 */
+			// 		'scrollLeft': box.scrollLeft,
+			// 		/* 获得目标元素中内容向上滚动的距离 */
+			// 		'scrollTop': document.documentElement.scrollTop,
+			// 	}
+			// )
+
+			console.log(document.documentElement.clientHeight, document.documentElement.scrollTop, document.documentElement.scrollHeight)
+		}
+
+		box.oncontextmenu = function (e){
+			e.preventDefault()
+			console.log('oncontextmenu--------')
+			const box2 = document.querySelector('.box2');
+			box2.style.display = 'block'
+		}
+
+		box.ondblclick = function (e) {
+			isdblclick = true
+			const box2 = document.querySelector('.box2');
+			box2.style.display = 'block'
+			console.log('ondbclick--------')
+		}
+
+		// 如何给一个元素绑定滚动事件？？以及如何判断元素滚动到底部？？
+		const box3 = document.querySelector('.box3')
+		box3.onscroll = function () {
+			console.log(box3.scrollHeight, box3.scrollTop + box3.clientHeight)
+			// 内容触底的判断条件
+			if (box3.scrollHeight < box3.scrollTop + box3.clientHeight + 1) {
+				console.log('scroll----------')
+			}
+		}
+
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<input id="input" type="text">
+	<textarea name="" id="" cols="30" rows="10"></textarea>
+	<select name="" id="">
+		<option value="外网">ww</option>
+		<option value="外">ww</option>
+	</select>
+	<video src="xxx"></video>
+	<audio src=""></audio>
+	<canvas id="canvas"></canvas>
+	<div id="box">盒子元素</div>
+	<p id="text">我是 shadowdom 中的元素</p>
+
+
+	<!-- 自定义元素 -->
+	<custom-element id="custom">21212</custom-element>
+
+	<script>
+		const box = document.querySelector('#box')
+		const text = document.querySelector('#text')
+		const input = document.querySelector('#input')
+		const custom = document.querySelector('#custom')
+		let shadow = box.attachShadow({mode: 'closed'})
+		shadow.appendChild(text)
+
+		// shadow dom 的核心就是一个 attachShadow 的方法，为一个元素添加 shadowdom，然后像普通元素一样操作。
+		// 只有模式是 open 的时候可以访问到,否则是 null
+		const shadowRoot = box.shadowRoot
+		console.log(shadow, shadowRoot);
+
+		custom.appendChild(textarea)
+
+		let customElementRegistry = window.customElements;
+		customElementRegistry.define('my-custom-element', MyCustomElement);
+	</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+
+	<script>
+		// compose 的函数组合实现
+		// tasks = [task1, task2, task3, task4]
+		// f1 = (...arg) = step3(task4(arg))
+		// f2 = (...arg) = step2(f1(arg))
+		// f3 = (...arg) = step1(f2(arg))
+
+		function task1 (...rest) {
+			console.log('task1', rest)
+			return rest
+		}
+
+		function task2 (...rest) {
+			console.log('task2', rest)
+			return rest
+		}
+
+		function task3 (...rest) {
+			console.log('task3', rest)
+			return rest
+		}
+
+		function task4 (...rest) {
+			console.log('task4', rest)
+			return rest
+		}
+
+		const tasks = [task1, task2, task3, task4]
+
+		// const f1 = (...rest) => task3(task4.apply(null, rest))
+		// const f2 = (...rest) => task2(f1.apply(null, rest))
+		// const f3 = (...rest) => task1(f2.apply(null, rest))
+
+		const compose = (...tasks) => tasks.reduce((f, g) => 
+			(...arg) => g.call(null, f.apply(null, arg)),
+		tasks.shift())
+
+		console.log(compose(1,2,3,4))
+
+		// f3 (1,2,3,4)
+
+
+	</script>
+</body>
+</html>

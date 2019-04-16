@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.btn, .btn2 {
+			width: 100px;
+			height: 40px;
+			text-align: center;
+			line-height: 40px;
+			border: 1px solid red;
+		}
+	</style>
+</head>
+<body>
+	<div class="btn">我是一个按钮</div>
+	<div class="btn2">我是一个按钮</div>
+
+
+	<script>
+		const divDom = document.querySelector('.btn')
+		const divDom2 = document.querySelector('.btn2')
+
+		Object.defineProperty(HTMLDivElement.prototype, 'onclick', {
+			set: function () {
+				const fn = arguments[0]
+				HTMLDivElement.prototype.addEventListener.apply(this, ['click', function () {
+					fn()
+					console.log(this,'set 点击事件添加的方法')
+				}])
+			},
+			get: function () {
+				console.log(arguments)
+				console.log('get 重写属性 onclick')
+				return function () {
+					console.log('get 重写属性 onclick')
+				}
+			}
+		})
+
+		divDom2.onclick = function() {
+			console.log('点击事件添加的方法')
+		}
+
+	</script>
+</body>
+</html>
