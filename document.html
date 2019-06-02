@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+
+
+	<script>
+		// 当拖动卡片的时候需要和 pointer-events 结合使用才能知道当前处在哪个元素上方
+		// const elem = document.element​From​Point(10,10); // 获取客户端坐标是 10 10 的最顶层元素
+		// const el = element.closest('.selector'); // 获取当前元素指定选择器的最近父元素，可能是自己
+
+		// // point-events 属性的妙用：以前很多时候禁用按钮的点击状态是通过 js 来实现的，现在可以使用这个属性来禁止一切鼠标事件。减少 js 代码
+		// element.scroll​Into​View() // 将元素滚动到可视区域
+
+		// 获取浏览器窗口宽高
+		// 1. window 的 innerHeight 和 innerWidth: 包含滚动条的可视区域  所以 window 对象上面可以绑定 scroll 事件
+		// 2. window 的 outerHeight 和 outerWidth: 整个浏览器的宽高，包含地址栏和标签栏
+		// 3. document.documentElement.clientWidth 和 document.documentElement.clientHeight: 不包含滚动条
+		// document.body.clientWidth. document.body.clientHeight 这种方法不靠谱  document.body.clientWidth: 在 html 没有设置 padding 的时候是对的。设置了 padding 就不对了。document.body.clientHeight 获取的是 body 整个内容的高度。也就是受到 CSS 的影响
+
+		// 窗口向上滚动的距离
+		// 1. window.pageYOffset
+		// 2. document.documentElement.scrollTop
+
+		// 获取窗口在显示器中的位置
+		// window.screenX. window.screenY
+
+		// document 上面的属性
+		// 怎么根据文档对象获得窗口对象？
+		// 1. document.defaultView
+		// 获取 document 的文档类型
+		// 2. document.contentType: MIME 类型 text/html, 所以 html 其实就是文本文件
+		// 返回当前文档的位置
+		// 3. docuement.documentURI
+		// 获取设置文档的域
+		// document.domain  AB网页(同根域，不同子域)共享 cookie 有两种方式
+		// 1. A 网页在种的时候 设置 domain 再种，B 网页就能直接读
+		// 2. 服务器端在种的时候就种在根域下面
+		// 这种方式也可以解决 iframe 的跨域问题，不同源的父窗口和 iframe 的 dom 无法相互通信
+
+
+
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		div.box7 {
+			width: 100px;
+			height: 100px;
+			background: green;
+		}
+	</style>
+</head>
+<body>
+	<input id="input" type="text">	
+	<div class="box1">
+		<div class="box2">
+			<div class="box3">
+				<div class="box4">
+					<div class="box5">
+						<div class="box6">
+							<div class="box7"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		// Set 对象中 values 和 entries 方法的区别
+		// 返回的都是 SetIterator，实体都是数组
+		// values: 是值数组，entries：是键值数组
+
+		// Set 中添加新的值：set.add(value)  删除：delete(value)
+		// Map 中添加新的值：map.set(key, value) 删除：delete(key)
+
+		// Set 遍历值：用 values, Map: 遍历值：values(),keys() 遍历键值
+
+		// 取值：Set 不能用下标，需先转为数组。Map： 使用 get(key) 方法
+
+		// 数据清除：clear()
+
+
+
+		function findItemElement(target, targetClassName, topClassName) {
+			while(target) {
+				// 找到父元素的时候终止
+				if (target.className.includes(topClassName)) {
+					return null
+				}
+				// 找到目标元素的时候终止
+				if (target.className.includes(targetClassName)) {
+					return target
+				}
+				target = target.parentElement
+			}
+		}
+
+		function findItemRecursive(target, targetClassName, topClassName) {
+			if (target.className.includes(targetClassName))  {
+				return target
+			} else if (target.className.includes(topClassName)) {
+				return null
+			} else {
+				return findItemRecursive(target.parentElement, targetClassName, topClassName)
+			}
+		}
+
+
+		// 鼠标事件的顺序：click 之前一定是 mouuseup
+		// mousedown 到 mouseup 一共有三种情况：
+		// mousedown mousemove mouseup
+		// mousedown mouseup
+		// mousedown contextmenu mouseup
+
+
+		// 这些事件需要一起使用的时候就需要使用 状态变量记录 当前数鼠标是否按下，是否移动
+		const input = document.querySelector('#input');
+		input.addEventListener('blur', () => {
+			console.log('元素失去焦点')
+		})
+		// 阻止input 元素失去焦点
+		document.addEventListener('mousedown', (e) => {
+			if (e.target !== input) {
+				e.preventDefault()
+				e.stopPropagation()
+			}
+			console.log('mousedown')
+		})
+		document.addEventListener('mouseup', () => {
+			console.log('mouseup')
+		})
+		document.addEventListener('click', (e) => {
+			console.log('循环查找元素', findItemElement(e.target, 'box4', 'box1'))
+			console.log('递归查找元素', findItemRecursive(e.target, 'box4', 'box1'))
+			
+			if (e.target !== input) {
+				e.preventDefault()
+				e.stopPropagation()
+			}
+			console.log('click')
+		})
+		document.addEventListener('dblclick', (e) => {
+			console.log('dblclick')
+		})
+		document.addEventListener('mousemove', () => {
+			// console.log('mousemove')
+		})
+		document.addEventListener('contextmenu', (e) => {
+			e.preventDefault()
+			console.log('contextmenu')
+		})
+		document.addEv
+	</script>
+</body>
+</html>

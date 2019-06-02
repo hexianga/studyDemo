@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<style>
+		.iframe {
+			width: 400px;
+			height: 400px;
+		}
+	</style>
+</head>
+<body>
+	
+
+	<iframe id="myiframe" class="iframe" src="http://localhost:8080/child.html" frameborder="0"></iframe>
+
+	<script>
+		 
+		// 获取 iframe 元素
+		iFrame = document.getElementById('myiframe')
+
+		// iframe 加载完毕后再发送消息，否则子页面接收不到 message
+		iFrame.onload = function(){
+
+		  //iframe加载完立即发送一条消息
+		  iFrame.contentWindow.postMessage('MessageFromIndex1','*');
+
+		}
+
+
+
+		const str = '?key1=value1&key2=value2&key3=value3&key3=value4'
+
+		function parseURL(str) {
+			const obj = {}
+			str.replace(/&?\??(\w+)=(\w+)/g, (match, key, value) => {
+				if (typeof obj[key] === 'undefined') {
+					obj[key] = value
+				} else {
+					obj[key] = [].concat(obj[key], value)
+				}
+			})
+
+			return obj
+		}
+
+		parseURL(str)
+
+	</script>
+</body>
+</html>

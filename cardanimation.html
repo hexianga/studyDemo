@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    .d-target{
+      width: 100px;
+      height: 100px;
+      border: 1px solid #ccc;
+      border-radius: 50%;
+      position: absolute;
+      left: 100px;
+      bottom: 100px;
+    }
+
+    .outer{
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        transition: all 0.35s linear;
+    }
+    .inner{
+        width: 30px;
+        height: 30px;
+        background: #ccc;
+        border-radius: 50%;
+        /* 这个是实现小球向上运动一点再下来的效果，由贝赛儿曲线实现 */
+        transition: all 0.35s cubic-bezier(0.39,-0.4,0.83,0.23);
+        position: absolute;
+    }
+    .outer.point-pre{
+        display: none;
+    }
+  </style>
+</head>
+<body>
+  <p>在页面的任何位置点击,将有一个小球飞入类为d-targer圆形容器中,可以连续点击</p>
+  <div id="ttt" class="d-target"></div>
+
+  <!-- 多个元素是为了响应用户多次点击，出现多个小球运动效果 -->
+  <div class="ball-wrapper">
+    <div class="outer point-pre">
+      <div class="inner"></div>
+    </div>
+    <div class="outer point-pre">
+      <div class="inner"></div>
+    </div>
+    <div class="outer point-pre">
+      <div class="inner"></div>
+    </div>
+  </div>
+
+  <script>
+  window.onload = function () {
+    // 　隐藏元素到显示时过度的动画不会生效   这就是为什么在动画中会使用到 setTimeout(, 0)
+    /* 获取outer下没有在运动的元素 */
+    function getElementMyShowHide () {
+        const ballWrapper = document.querySelector('.ball-wrapper')
+        const childElement = ballWrapper.querySelector('.point-pre');
+        return childElement;
+    }
+
+    // 计算落点的位置
+    const { left: endLeft, top: endTop } = document.querySelector('#ttt').getBoundingClientRect()
+    window.addEventListener('click', function (event) {
+      const left = event.clientX;
+      const top  = event.clientY;
+      const outer = getElementMyShowHide();
+      outer.style.left = left + 'px';
+      outer.style.top = top + 'px';
+      outer.classList.remove('point-pre');
+      const leftOffset = endLeft  - left;
+      const topOffset =  endTop - top;
+
+      // 这里使用定时器是为了让元素从隐藏到显示有动画出现
+      setTimeout(function () {
+          // 这两行代码加上时间曲线实现了抛物线的动画效果
+          const inner = outer.querySelector('.inner')
+          inner.style.transform = `translateY(${topOffset}px)`;
+          outer.style.transform = `translateX(${leftOffset}px)`;
+
+          // 过度时间结束后元素需要消失
+          setTimeout(() => {
+            outer.classList.add('point-pre');
+            outer.style.transform = ''
+            inner.style.transform = ''
+          }, 380)
+      }, 0);
+
+  }, 30);
+}
+  </script>
+</body>
+</html>

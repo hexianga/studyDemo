@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		.list-card-wrap {
+			
+		}
+
+
+    .list-background-one {
+      background: #F6F5FA;
+      width: 204px;
+      height: 56px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      position: absolute;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 0, 0, 0.03);
+      box-sizing: border-box;
+    }
+		.list-pic {
+			width: 32px;
+			height: 32px;
+			margin-right: 16px;	
+		}
+		.list-title {
+			font-size: 12px;
+			color: rgba(0, 0, 0, 0.8);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: normal;
+		}
+		.list-file-num, .card-file-num {
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: #5334F5;
+      border-radius: 50%;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+		}
+
+    .list-background-two {
+      position: absolute;
+      left: 5px;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 0, 0, 0.03);
+      height: 54px;
+      width: 202px;
+      background: #F6F5FA;
+      z-index: -1;
+    }
+    .list-background-three {
+      position: absolute;
+      left: 10px;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 0, 0, 0.03);
+      height: 54px;
+      width: 202px;
+      background: #F6F5FA;
+      z-index: -2;
+    }
+
+ 
+
+
+
+
+    .card-wrap {
+      width: 120px;
+      height: 120px;
+      
+      position: relative;
+      top: 200px;
+    }
+
+    .card-pic-wrapper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .card-pic {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 4px 8px rgba(29,7,36,0.08), 0 1px 3px rgba(29,7,36,0.12);
+      max-width: 120px;
+      max-height: 120px;
+    }
+
+    .background-card {
+      width: 80px;
+      height: 102px;
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      border-radius: 4px;
+      background: #F6F5FA;
+      transform: rotate(-16deg);
+      position: relative;
+      top: 8px;
+      left: 18px;
+    }
+
+
+    .folder-card-wrap {
+      position: relative;
+      width: 64px;
+      height: 64px;
+    }
+    .folder-background-card {
+      position: absolute;
+      top: 0;
+      left: 0
+      width: 38px;
+      height: 52px;
+      transform: rotate(-15deg);
+      box-shadow: 0 4px 12px rgba(0,0,0,.1);
+      border-radius: 2px;
+    }
+    .folder-card-pic {
+      width: 64px;
+      height: 64px;
+      position: absolute;
+      top: 0;
+      left: 0px;
+      z-index: 2;
+    }
+  
+	</style>
+</head>
+<body>
+
+
+  <div class="list-card-wrap">
+    <div class="list-background-one">
+      <img class="list-pic" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PGRlZnM+PHBhdGggaWQ9ImIiIGQ9Ik0yMi41NDMgNi42NzVDMjIuMTkgOS41ODUgMjIuMDA5IDExLjY5MyAyMiAxM2E0OTIuMzAyIDQ5Mi4zMDIgMCAwIDAtLjAwNCA2LjM5Ni42LjYgMCAwIDEtLjYuNjA0SDIuNmEuNi42IDAgMCAxLS42LS42VjEzYzAtMS4zMTEtLjE4LTMuNDE5LS41NC02LjMyM2EuNi42IDAgMCAxIC41OTUtLjY3M2wxOS44OTItLjAwMmEuNi42IDAgMCAxIC41OTYuNjczeiI+PC9wYXRoPjxmaWx0ZXIgaWQ9ImEiIHdpZHRoPSIxMzAuOSUiIGhlaWdodD0iMTUwJSIgeD0iLTE2LjYlIiB5PSItMTcuOSUiIGZpbHRlclVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCI+PGZlT2Zmc2V0IGR5PSIxIiBpbj0iU291cmNlQWxwaGEiIHJlc3VsdD0ic2hhZG93T2Zmc2V0T3V0ZXIxIj48L2ZlT2Zmc2V0PjxmZUdhdXNzaWFuQmx1ciBpbj0ic2hhZG93T2Zmc2V0T3V0ZXIxIiByZXN1bHQ9InNoYWRvd0JsdXJPdXRlcjEiIHN0ZERldmlhdGlvbj0iMSI+PC9mZUdhdXNzaWFuQmx1cj48ZmVDb2xvck1hdHJpeCBpbj0ic2hhZG93Qmx1ck91dGVyMSIgdmFsdWVzPSIwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwLjEgMCI+PC9mZUNvbG9yTWF0cml4PjwvZmlsdGVyPjxwYXRoIGlkPSJjIiBkPSJNMTggMS42MDdWMTQuNGEuNi42IDAgMCAxLS42LjZILjYwMmEuNi42IDAgMCAxLS42LS42MDJMLjA1Ni42OThBLjYuNiAwIDAgMSAuNjU2LjFoNi42Yy4xOTggMCAuMzk0LjA1LjU2OS4xNDRsMS4zMDkuNzA1YTEuMiAxLjIgMCAwIDAgLjU4Mi4xNDRsNy42NzctLjA4NmEuNi42IDAgMCAxIC42MDcuNnoiPjwvcGF0aD48L2RlZnM+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48Zz48dXNlIGZpbGw9IiMwMDAiIGZpbHRlcj0idXJsKCNhKSIgeGxpbms6aHJlZj0iI2IiPjwvdXNlPjx1c2UgZmlsbD0iIzhGQTlEQiIgeGxpbms6aHJlZj0iI2IiPjwvdXNlPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzIDQpIj48dXNlIGZpbGw9IiM4RkE5REIiIHhsaW5rOmhyZWY9IiNjIj48L3VzZT48dXNlIGZpbGw9IiMwMDAiIGZpbGwtb3BhY2l0eT0iLjE1IiB4bGluazpocmVmPSIjYyI+PC91c2U+PC9nPjxwYXRoIGZpbGw9IiM4RkE5REIiIGQ9Ik0yMi41NDMgNi42NzhDMjIuMTkgOS41ODUgMjIuMDA5IDExLjY5MyAyMiAxM2E0OTIuMzAyIDQ5Mi4zMDIgMCAwIDAtLjAwNCA2LjM5Ni42LjYgMCAwIDEtLjYuNjA0SDIuNmEuNi42IDAgMCAxLS42LS42VjEzYzAtMS4zMTEtLjE4LTMuNDItLjU0LTYuMzI2YS42LjYgMCAwIDEgLjU5NS0uNjczbDE5Ljg5Mi4wMDVhLjYuNiAwIDAgMSAuNTk2LjY3MnoiPjwvcGF0aD48L2c+PC9zdmc+" alt="" />
+      <h2 class="list-title">新建文件夹新建文件夹新建文件夹新建文件夹</h2>
+      <span class="list-file-num">4</span>
+    </div>
+    <div class="list-background-two"></div>
+    <div class="list-background-three"></div>
+  </div>  
+	
+
+
+
+
+
+  <div class="card-wrap">
+    <div class="background-card"></div>
+    <div class="card-pic-wrapper">
+      <!-- <img class="card-pic" src="https://bucket-account-dev-m8qw.oss-cn-beijing.aliyuncs.com/drive/jN0eBl2mERg51qM9/JqV7lq3YrrURO8Me/JqV7lq3YrrURO8Me.png" alt=""> -->
+      <img class="card-pic" src="./big.png" alt="">
+      <!-- <img class="card-pic" src="https://bucket-account-dev-m8qw.oss-cn-beijing.aliyuncs.com/drive/YJepVgXepblvb6R1/m1zwP4nm2UAg3dVj/wEG8gDm6ptnlpXkd.png" alt=""> -->
+    </div>
+    <span class="card-file-num">4</span>
+  </div>
+
+
+    <div class="folder-card-wrap">
+      <div class="folder-background-card"></div>
+      <img class="folder-card-pic" src="./big.png" alt="">
+      <span class="card-file-num">4</span>
+    </div>
+
+</body>
+</html>

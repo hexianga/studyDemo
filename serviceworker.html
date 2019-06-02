@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		if ('serviceWorker' in navigator) {
+		    navigator.serviceWorker.register('./sw.js', { scope: './' }).then(function(reg) {
+		      // registration worked
+		      console.log('Registration succeeded. Scope is ' + reg.scope);
+		    }).catch(function(error) {
+		      // registration failed
+		      console.log('Registration failed with ' + error);
+		    });
+		  }
+
+		  function omit(object, omitprops) {
+		  	return Object.keys(object).reduce((obj, key) => {
+	  			if (omitprops.includes(key)) {
+	  				return obj
+	  			} else {
+	  				return {
+						...obj,
+						[key]: object[key]
+	  				}
+	  			}
+		  	}, {})
+
+		 }
+		  
+	</script>
+</body>
+</html>

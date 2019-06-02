@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<button id="button" onclick="((e) => handleClick(e))()">点我</button>
+	<p tabindex="1">这是一段应用了 tabindex 的元素，可以聚焦</p>
+	<button id="mockKeyBoard">一个元素模拟enter按下</button>
+
+	<script>
+		const buttonDom = document.querySelector('button')
+		// button: 0 1 2(左中右)
+		// which: 1 2 3(左中右)
+		// buttons: 1 2 4(左右中)
+		buttonDom.onclick = function handleClick(event) {
+
+			// 模拟键盘事件
+			// 键盘事件只能绑定在可以聚焦的元素上面
+			const keydownEvent = new KeyboardEvent('keydown', {
+				key: 'Enter'
+			})
+			mockKeyBoard.dispatchEvent(keydownEvent)
+
+
+			console.log(event)
+			console.log({
+				'event.button': event.button,
+				'event.which:': event.which,
+				'event.buttons:': event.buttons,
+				altKey: event.altKey,
+				ctrlKey: event.ctrlKey,
+				shiftKey: event.shiftKey,
+			})
+		}
+		buttonDom.oncontextmenu = function handleClick(event) {
+			console.log(event)
+			console.log({
+				'event.button': event.button,
+				'event.which:': event.which,
+				'event.buttons:': event.buttons,
+				altKey: event.altKey,
+				ctrlKey: event.ctrlKey,
+				shiftKey: event.shiftKey,
+			})
+		}
+		// buttonDom.onkeydown = function (event) {
+		// 	console.log(event, document.activeElement)
+		// }
+		document.onkeydown = function (event) {
+			// 实践证明：使用 event 的 key 值可以匹配到 所有的数字，字母，除空格以外的非打印字符。
+			// key 返回的是键盘上面物理按键的值，也就是键盘上面标注的值
+			// 识别用户按下空格只能使用 code === "Space"
+			console.log(event, document.activeElement)
+		}
+
+
+		const mockKeyBoard = document.querySelector('#mockKeyBoard')
+		mockKeyBoard.onkeydown = function (event) {
+			console.log('mockKeyBoard', event, document.activeElement)
+		}
+
+
+
+	</script>
+
+</body>
+</html>
