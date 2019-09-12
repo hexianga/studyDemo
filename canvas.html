@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<style>
+		.param {
+			font-size: 18px;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="canvasContainer" width="600" height="600">该浏览器不支持 canvas</canvas>
+	<p class="param">Hello world</p>
+	<script>
+
+		const canvas = document.querySelector('#canvasContainer');
+		const ctx = canvas.getContext('2d');
+
+		// 解决 retina 屏上模糊的问题
+		// 为什么模糊？？？   存储像素比  渲染的 dpr       
+		// 比如我们的图片只提供了 30 个已知的像素值，其余的 90 个只能靠浏览器根据周围的像素点去计算
+		// 为什么比较模糊的渲染在下载之后会清楚一些？？  模糊实际上是浏览器渲染时候的行为，下载之后查看图片是没有这个像素估算的过程的。
+		// backingStorePixelRatio 根据各个浏览器而定    存储的时候按照 1：1 的比例存，渲染的时候却要放大两倍，所以模糊。相当于一倍图在 retina 上渲染模糊
+		// 其实就是二倍图原理
+
+		const devicePixelRatio = window.devicePixelRatio || 1
+		const backingStoreRatio = ctx.webkitBackingStorePixelRatio || 1
+		const ratio = devicePixelRatio / backingStoreRatio
+		const originWidth = canvas.width;
+		const originHeight = canvas.height
+		canvas.width = originWidth * 2
+		canvas.height = originHeight * 2
+		// canvas 自身放大 css 控制容器不变 
+		canvas.style.width = originWidth + 'px'
+		canvas.style.height = originHeight + 'px'
+		ctx.scale(ratio, ratio)
+
+
+		// 关于样式
+		// 颜色：fillStyle/strokeStyle 的取值是 color(颜色，渐变对象，图案) 如果要应用不同颜色需要重新设置
+		// 线的样式: 宽度 
+
+		// 绘制填充矩形
+		// ctx.fillStyle = 'white'
+		// ctx.fillRect(0, 0, 600, 600);
+		// ctx.strokeRect(0, 30, 20, 20)
+  	// console.log('toDataURL', canvas.toDataURL())
+  	// console.log('toDataURL', canvas.toDataURL('image/jpeg', 0.3))
+
+
+		// // 清空绘制区域
+		// ctx.fillRect(30, 0, 40, 40)
+		// ctx.clearRect(30, 0, 20, 20)
+
+		// 新建路径 绘制一条渐变路径
+		// ctx.beginPath();
+		// ctx.moveTo(1, 60)
+		// ctx.lineTo(1, 90)
+		// const gradient = ctx.createLinearGradient(0, 60, 0, 90) // CanvasGradient
+		// gradient.addColorStop("0","magenta");
+		// gradient.addColorStop("1.0","red");
+		// ctx.strokeStyle = gradient // 要么纯色 要么渐变色
+		// ctx.lineWidth = 5
+		// ctx.stroke()
+
+		// 渐变路径写文字
+		// 由于 Canvas 放大了，绘制文字时，字体也要放大，绘制完成后，字体再缩小回原大小
+		ctx.font = "18px PingFang SC";
+  	ctx.fillText("Hello world", 1, 100); // 写文字
+
+  	// const gradient = ctx.createLinearGradient(0, 160, canvas.width, 160) // CanvasGradient
+		// gradient.addColorStop("0","red");
+		// gradient.addColorStop("1.0","green");
+		// ctx.strokeStyle = gradient
+		// ctx.font = "48px serif";
+  // 	ctx.strokeText('hello word hello word hello word hello word', 0, 160) // 绘制文本边框
+
+  	// 使用背景图样式  pattern
+  	// const img = new Image()
+  	// img.src = 'https://mdn.mozillademos.org/files/222/Canvas_createpattern.png'
+  	// img.onload = function () {
+  	// 	var ptrn = ctx.createPattern(img, 'repeat');
+  	// 	ctx.fillStyle = ptrn;
+  	// 	ctx.fillRect(0, 0, 600, 500);
+  	// }
+
+  	// canvas 绘制图片
+  	const img = new Image();
+  	img.setAttribute('crossorigin', 'anonymous') // 这个属性表明是否必须使用 CORS 完成相关图像的抓取, 如果服务器没有允许，还是拉取不到图片
+  	img.src = 'https://drive.sg.work/static/logo.png'
+  	img.onload = () => {
+  		// retina 上绘制图片时 宽和高减半
+  		ctx.drawImage(img, 0, 0, img.width / ratio, img.height / ratio);
+  		console.log('toDataURL', canvas.toDataURL())
+  	}
+
+
+	</script>
+</body>
+</html>
