@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+  
+    // 1. 原型链继承
+    function Parent () {
+      this.name = 'name'
+    }
+    Parent.prototype.setName = function(name) {
+      return this.name = name;
+    }
+
+    function Child () {
+      this.childName = 'name'
+    }
+    Child.prototype = new Parent();
+    const child1 = new Child();
+    const child2 = new Child();
+    child1.setName('child1')
+    console.log(child2.name)
+
+    // 缺点: 共享了原型对象，一个实例改变原型上的值，别的实例原型上的值也发生改变  父类的方法能复用
+
+    // 2. 构造函数继承
+    function Parent1 () {
+      this.name = 'name'
+    }
+    Parent1.prototype.setName = function(name) {
+      this.name = name;
+    }
+
+    function Child1 () {
+      Parent1.call(this)
+      this.childName = 'name'
+    }
+
+    // 缺点：父类方法不能复用
+
+    // 3. 组合继承
+    function Parent2 () {
+      this.name = 'name'
+    }
+    Parent2.prototype.setName = function(name) {
+      this.name = name;
+    }
+
+    function Child2 () {
+      Parent2.call(this)
+      this.childName = 'name'
+    }
+    Child2.prototype = new Child2();
+    // 既继承了属性也共用了方法
+
+    // 缺点：父类构造函数执行了两次函
+
+    // 5. 原型式继承   const newObj = Object.create(obj)
+    // 6. 寄生式继承 创建一个仅用于封装继承过程的函数
+    function createObj(o) {
+      const newObj = Object.create(o)
+      newObj.fn = function () {
+      }
+      return newOnbj;
+    }
+
+    const child6 = createObj({
+      a: 3
+    });
+
+    // 4. 寄生组合式继承  完美继承
+    function Parent3 () {
+      this.name = 'name'
+    }
+
+    Parent3.prototype.setName = function(name) {
+      this.name = name;
+    }
+
+    function Child3 () {
+      Parent2.call(this)
+      this.childName = 'name'
+    }
+
+    // 如果直接使用 Child3.prototype = Parent3.prototype, 将不能判断对象的直接构造函数
+    // 通过中间对象将原型隔离开 然后再修复 constructor 的指向，则不会相互干扰
+    Child3.prototype = Object.create(Parent3.prototype);
+    Child3.prototype.constructor = Child3;
+
+    // Object.create  的内部实现：
+    function create (obj) {
+      function NewObj () {}
+      NewObj.prototype = obj
+      return new newObj;
+    }
+
+    // new 的过程
+    function newFn(Fn, param) {
+      const obj = new Object()
+      obj.__proto__ = Fn.prototype;
+      const result = Fn.call(obj, param)
+      return result = typeof result === 'object' ? result : obj
+    }
+  </script>
+</body>
+</html>
