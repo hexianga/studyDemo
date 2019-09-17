@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  
+  <script>
+        
+    // ## 浏览器中如何判断平台，如何判断浏览器，如何判断应用
+
+    // [whatismybrowser](whatismybrowser.com)
+
+    // 通过浏览器的 **userAgent** 来判断当前浏览器的平台和类型，但是 **userAgent** 是可以在客户端修改的。
+
+    // 可以直接通过 **js** 修改 **userAgent**，也可以通过浏览器的配置修改 **userAgent**。
+
+    // ```
+    // Object.defineProperty(navigator, 'userAgent', {
+    //   value: customUserAgent,
+    //   writable: false
+    // });
+    // ```
+
+    //     const ua = navigator.userAgent()
+    // 判断平台：
+
+    // 1. Android:
+    // ```
+    // const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
+    // ```
+    // 2. IOS: 
+    // 3. MAC：
+    // 4. Windows: 
+
+    // 判断浏览器：
+
+    // 1. IE:
+
+    // ```
+    // const isIE = !!document.documentMode // jquery 支持
+    // ```
+    // 2. Chrome: 
+    // 3. Safari:
+    // 4. Firefox:
+    // 判断应用：
+    
+    </script>
+</body>
+</html>

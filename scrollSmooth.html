@@ -13,10 +13,20 @@
   <script>
     window.__forceSmoothScrollPolyfill__ = true;
     function scrol() {
-      window.scrollTo({
-        top: 1000,
-        behavior: "smooth",
-      })
+      // window.scrollTo({
+      //   top: 1000,
+      //   behavior: "smooth",
+      // })
+    }
+    
+    // 定时器平滑滚动 400px
+    const scrollCallBack = () => {
+      const scrollTop = document.documentElement.scrollTop
+      if (scrollTop < 1400) {
+        // 在浏览器下次重绘之前执行回调函数，如果想要回调执行后下次重绘再次执行下一帧动画则需要在回调函数里面再次调用该方法
+        window.requestAnimationFrame(scrollCallBack)
+        document.documentElement.scrollTop = scrollTop + 50;
+      }
     }
   </script>
 </head>
@@ -26,16 +36,13 @@
 	1. 使用 hash 无法实现平滑滚动，只能实现立即滚动
 	2. window.scrollTo + 参数实现平滑滚动 behavior: "smooth" 其实 scroll 和 scrollTo 这两个方法是一样的，参数也一样
   3. 给 html 应用 scroll-behavior 属性
-  4. setInterval 来实现页面的平滑滚动 但是页面会抖动
+  4. requestAnimationFrame 
 
-  所以最终的方案：window.scrollTo + 腻子脚本  https://github.com/iamdustan/smoothscroll
-
+  所以最终的方案：window.scrollTo + 腻子脚本  https://github.com/iamdustan/smoothscroll  腻子脚本其实也是使用的是 requestAnimationFrame
 
   兼容性问题：window.scrollTo 和  scroll-behavior 属性在 safari 上面都不支持，在 IE 上也不支持
-
-
 	-->
-  <button onclick="scrol()">平滑滚动</button>
+  <button onclick="scrollCallBack()">平滑滚动</button>
   <a href="#poetry6">滚动到最后一首诗</a>
 
 	<div id="poetry1" class="shici-container www-shadow-card">

@@ -29,9 +29,9 @@
 
 	<div class="box">
 		<img src="./images/placepic.jpg" alt="" data-src="./images/1.jpg">
+		<img src="./images/placepic.jpg" alt="" data-src="https://img30.360buyimg.com/jdcms/s300x300_jfs/t1/23982/9/7469/150514/5c80c070Eb45718f6/60659631fceddbff.jpg">
 		<img src="./images/placepic.jpg" alt="" data-src="./images/1.jpg">
-		<img src="./images/placepic.jpg" alt="" data-src="./images/1.jpg">
-		<img src="./images/placepic.jpg" alt="" data-src="./images/1.jpg">
+		<img src="./images/placepic.jpg" alt="" data-src="https://img30.360buyimg.com/jdcms/s300x300_jfs/t1/23982/9/7469/150514/5c80c070Eb45718f6/60659631fceddbff.jpg">
 		<img src="./images/placepic.jpg" alt="" data-src="./images/1.jpg">
 		<img src="./images/placepic.jpg" alt="" data-src="./images/1.jpg">
 		<img src="./images/placepic.jpg" alt="" data-src="https://img14.360buyimg.com/jdcms/s300x300_jfs/t1/16709/18/11977/138519/5c94af2aE82480755/d6598966c6f0ba89.jpg">
@@ -109,13 +109,19 @@
 		// 其中返回的 DOMRect 对象中的 width 和 height 的值和 offsetHeight 和 offsetWidth 相同。
 		// 还有 left(x) top(y) bottom right，都是相对于浏览器内容区域左上角的坐标点取值。left 和 top 是左上角，bottom 和 right 是右下角
 
-		let imageList = document.querySelectorAll('img')
-		imageList.forEach(item => {
-			const domRect = item.getBoundingClientRect()
-			if (domRect.top <= window.innerHeight) {
-				item.src = item.dataset.src
-			}
-		})
+
+
+
+
+
+		// 方式一：
+		// let imageList = document.querySelectorAll('img')
+		// imageList.forEach(item => {
+		// 	const domRect = item.getBoundingClientRect()
+		// 	if (domRect.top <= window.innerHeight) {
+		// 		item.src = item.dataset.src
+		// 	}
+		// })
 		
 		function loadImg () {
 			const restImg = []
@@ -133,7 +139,7 @@
 				}
 				restImg.push(item)
 			})
-			console.log(restImg.length)
+			// console.log(restImg.length)
 			imageList = restImg; 
 		}
 
@@ -150,7 +156,7 @@
 
 				// 节流
 				const nowTime = Date.now()
-				console.log(nowTime - lastTime)
+				// console.log(nowTime - lastTime)
 				if (nowTime - lastTime > delay) {
 					fn()
 					lastTime = nowTime;
@@ -165,12 +171,38 @@
 			return throttle
 		}
 
-		
-
-
 		// 每一次滚动都遍历所有的 img 元素
-		window.addEventListener('scroll', wrapper(loadImg, 700))
+		// window.addEventListener('scroll', wrapper(loadImg, 700))
 
+
+
+		// 方式二：
+		// 实现图片的懒加载 getBoundingClientRect 只是一种方案
+		// 第二种方案：IntersectionObserver
+		const addObserverToImage = () => {
+			// 提供了一种 异步观察目标元素 与其 祖先元素 或 顶级文档视窗(viewport) 交叉状态的方法
+			const callback = (entities) => {
+				console.log(entities)
+				entities.forEach((entity) => {
+					domRect = entity.boundingClientRect
+					if (domRect.top <= window.innerHeight) {
+						entity.target.src = entity.target.dataset.src
+						intersectionObserver.unobserve(entity.target)
+					}
+				})
+			}
+
+			const intersectionObserver = new IntersectionObserver(callback)
+			const images = document.querySelectorAll('img')
+
+			images.forEach((img) => {
+				intersectionObserver.observe(img)
+			})
+		}
+		
+		window.onload = () => {
+			addObserverToImage()
+		}
 
 	</script>
 </body>
