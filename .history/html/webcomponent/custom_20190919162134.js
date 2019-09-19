@@ -1,0 +1,1 @@
+customElements.define('word-count', WordCount, { extends: 'p' });

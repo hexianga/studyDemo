@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="./custom.js" defer></script>
+  <script src="./shadowDom.js" defer></script>
+  <title>Document</title>
+</head>
+<body>
+  <!-- custome element -->
+  <div>
+    <button class="add">Add custom-square to DOM</button>
+    <button class="update">Update attributes</button>
+    <button class="remove">Remove custom-square from DOM</button>
+  </div>
+
+  <!-- shadow dom -->
+  <video src=""></video>
+  <popup-info img="https://www.baidu.com/img/bd_logo1.png" data-text="这是提示信息"></popup-info>
+
+
+  <!-- template -->
+  <template id="my-paragraph">
+      <style>
+        p {
+          color: white;
+          background-color: #666;
+          padding: 5px;
+        }
+      </style>
+      <p><slot name="my-text">My default text</slot></p>
+    </template>
+  
+    <my-paragraph>
+      <span slot="my-text">Let's have some different text!</span>
+    </my-paragraph>
+  
+    <my-paragraph>
+      <ul slot="my-text">
+        <li>Let's have some different text!</li>
+        <li>In a list!</li>
+      </ul>
+    </my-paragraph>
+  <script>
+    // 1. Custom elements: A set of JavaScript APIs that allow you to define custom elements and their behaviour, which can then be used as desired in your user interface.
+    // 2. Shadow DOM: A set of JavaScript APIs for attaching an encapsulated "shadow" DOM tree to an element — which is rendered separately from the main document DOM — and controlling associated functionality. In this way, you can keep an element's features private, so they can be scripted and styled without the fear of collision with other parts of the document.
+    // 3. HTML templates: The <template> and <slot> elements enable you to write markup templates that are not displayed in the rendered page. These can then be reused multiple times as the basis of a custom element's structure.
+  
+    // custom element: 允许你去自定义元素和它的行为，当需要使用的时候直接使用。而不是再去写深层嵌套的标签。
+  </script>
+</body>
+</html>
