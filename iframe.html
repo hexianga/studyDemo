@@ -5,16 +5,15 @@
 	<title>Document</title>
 
 	<style>
-		.iframe {
-			width: 400px;
-			height: 400px;
-		}
+		/* .iframe {
+			width: 100vw;
+			height: 100vh;
+		} */
 	</style>
 </head>
 <body>
-	
-
-	<iframe id="myiframe" class="iframe" src="http://localhost:8080/child.html" frameborder="0"></iframe>
+	<iframe id="myiframe" class="iframe" src="https://www.baidu.com" frameborder="0"></iframe>
+	<!-- <iframe id="myiframe" class="iframe" src="http://localhost:8080/child.html" frameborder="0"></iframe> -->
 
 	<script>
 		 
@@ -23,7 +22,13 @@
 
 		// iframe 加载完毕后再发送消息，否则子页面接收不到 message
 		iFrame.onload = function(){
+			// 跨域是 contentDocument 为 null。
+			var iwindow = iframe.contentWindow;
+			// 跨域的时候 window 上面没有 document
+			// var idoc = iwindow.document;
+			iframe.height = idoc.body.offsetHeight;
 
+			
 		  //iframe加载完立即发送一条消息
 		  iFrame.contentWindow.postMessage('MessageFromIndex1','*');
 
