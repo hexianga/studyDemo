@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    html,body {
+      height: 3000px;
+      padding-top: 30px;
+    }
+
+    nav.fixed {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
+
+    nav {
+      background: rgba(0,0,0,0.5);
+      height: 30px;
+    }
+
+    .reference {
+      height: 10px;
+      background: rebeccapurple;  
+    }
+  </style>
+</head>
+<body>
+  <div class="reference"></div>
+
+  <nav>我可以吸顶</nav>
+
+  <script>
+    let nav = document.querySelector("nav");
+    let reference = document.querySelector(".reference");
+
+    new IntersectionObserver(entries => {
+
+      let item = entries[0];
+      let top = item.boundingClientRect.top;
+      let bottom = item.boundingClientRect.bottom;
+
+
+      // 当参照元素的的top值小于0，也就是在视窗的顶部的时候，开始吸顶，否则移除吸顶
+      if (top < 0) nav.classList.add("fixed");
+
+      if (bottom > 0 && top < 0) nav.classList.remove("fixed");
+
+    }).observe(reference);
+  </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+  <style>
+    #local_video, #screen_capture {
+      width: 500px;
+      height: 400px;
+    }
+  </style>
+</head>
+<body>
+    // 显示视频
+    <div class="flexChild" id="camera-container">
+      <div class="camera-box">
+        <video id="received_video" autoplay></video>
+        <!-- 我们不需要在此预览面板中听到本地音频。 -->
+        <video id="local_video" autoplay muted></video>
+        <video id="screen_capture" autoplay muted></video> 
+        <button id="hangup-button" onclick="hangUpCall();" disabled>
+          Hang Up
+        </button>
+      </div>
+    </div>
+
+  <script>
+    var mediaConstraints = {
+      audio: true, // We want an audio track
+      video: true // ...and we want a video track
+    };
+
+    function invite(evt) {
+      navigator.mediaDevices.getUserMedia(mediaConstraints)
+      .then(function(localStream) {
+        document.getElementById("local_video").srcObject = localStream;
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+    }
+
+    function startCapture() {
+      navigator.mediaDevices.getDisplayMedia(mediaConstraints)
+      .then(function(localStream) {
+        document.getElementById("screen_capture").srcObject = localStream;
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+    }
+    startCapture()
+    // invite()
+  </script>
+</body>
+</html>
