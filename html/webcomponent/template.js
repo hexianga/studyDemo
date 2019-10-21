@@ -34,4 +34,3 @@ const slottedSpan = document.querySelector('my-paragraph span');
 // td = t.content.querySelectorAll("td");
 // td[0].textContent = "1235646565";
 // td[1].textContent = "Stuff";
-

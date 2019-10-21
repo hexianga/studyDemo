@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 模拟 bind call apply 的实现
+    // 功能：一个函数接受一个参数，然后这个函数在执行的时候，其中的 this 指向这个参数
+    // 实现原理：
+    // 1. 把当前函数挂到指定对象上面
+    // 2. 执行这个函数
+    // 3. 删除这个函数
+
+    Function.prototype.call2 = function (context, ...rest) {
+      context.fn = this;
+      context.fn(...rest)
+      delete context.fn
+    }
+
+    Function.prototype.apply2 = function (context, params) {
+      context.fn = this;
+      params = params || []
+      context.fn(...params)
+      delete context.fn
+    }
+
+    Function.prototype.bind2 = function (context, ...rest1) {
+      return (...rest2) => this.call(context, ...rest1.concat(rest2))
+    }
+
+  </script>
+</body>
+</html>
