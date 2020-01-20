@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box {
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="box"></div>
+
+    <script>
+        // 如果 touchstart, touchmove 或者 touchend 在触摸的过程中触发了touchcancel事件
+        // 移动端来了电话，pc 端切换了应用程序窗口
+        const box = document.querySelector('.box')
+        box.addEventListener('touchstart', () => {
+            console.log('touchestart')
+        })
+        box.addEventListener('touchmove', () => {
+            event.preventDefault()
+
+            console.log('touchmove')
+        })
+        box.addEventListener('touchend', () => {
+            console.log('touchend')
+        })
+        box.addEventListener('touchcancel', () => {
+            console.log('touchcancel')
+        })
+        box.addEventListener('click', () => {
+            console.log('click')
+        })
+        box.addEventListener('mousedown', () => {
+            console.log('mousedown')
+        })
+        box.addEventListener('mouseup', () => {
+            console.log('mouseup')
+        })
+        box.addEventListener('mousemove', () => {
+            console.log('mousemove')
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        form {
+            width: 320px;
+            display: grid;
+            grid-row-gap: 10px;
+        }
+        form > div {
+            display: flex;
+        }
+
+        form > div input {
+            flex: 1;
+        }
+
+        form > div label {
+            text-align: right;
+        }
+
+        .container {
+            /* display: grid; */
+            /* width: 800px; */
+            /* background: darkcyan;
+            grid-template-columns: repeat(3, 100px);
+            gap: 10px; */
+            /* grid-template-areas: 'a b c'
+                                 'd e f'
+                                 'g h i'; */
+            display: grid;
+            grid-template-columns: 100px 100px 100px;
+            grid-template-rows: 100px 100px 100px;
+            /* grid-template-areas: 'a b c'
+                                 'd e f'
+                                 'g h i'; */
+            grid-template-areas: 'a a a'
+                                 'b b b'
+                                 'c c c';
+        }
+
+        .container > div {
+            height: 100px;
+            background: chartreuse;
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <div>
+            <label for="name">姓名：</label>
+            <input type="text" name="name">
+        </div>
+        <div>
+            <label for="sex">性别：</label>
+            <input type="text" name="sex">
+        </div>
+        <div>
+            <label for="age">年龄：</label>
+            <input type="text" name="age">
+        </div>
+        <div>
+            <label for="phone">手机号：</label>
+            <input type="text" name="phone">
+        </div>
+    </form>
+
+
+    <div class="container">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</body>
+</html>
+
+
+<!-- <div></div>
+<div></div>
+<div></div>
+<div></div> -->

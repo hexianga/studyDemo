@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/html2canvas/0.5.0-beta4/html2canvas.js"></script>
+    <!-- <script src="https://cdn.bootcss.com/html2canvas/0.4.1/html2canvas.js"></script> -->
+    <title>Document</title>
+</head>
+<body>
+    <div id="capture" style="padding: 10px; background: #f5da55">
+        <h4 style="color: #000; ">Hello world!</h4>
+    </div>
+
+    <script>
+        const capture =  document.querySelector("#capture")
+        console.log(html2canvas(capture))
+        html2canvas(capture, {
+            // width: capture.clientWidth * 2,
+            // height: capture.clientHeight * 2,
+            scale: 2,
+            onrendered: (canvas) => {
+                console.log('canvas', canvas)
+            }
+        }).then(canvas => {
+            const dataUrl = canvas.toDataURL("image/png", 1.0),
+                  newImg = document.createElement("img");
+            newImg.src = dataUrl;
+            newImg.style.width = '100%';
+            document.body.appendChild(newImg);
+            document.body.appendChild(canvas)
+        });
+    </script>
+</body>
+</html>

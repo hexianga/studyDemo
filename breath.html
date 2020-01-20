@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .breath-btn {
+            display: flex;
+            width: 100px;
+            height: 50px;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rebeccapurple;
+            background: rebeccapurple;
+            margin: 50px;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+    <script>
+ 
+    function getlocationpoint() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+            function (position) {
+                latitude = position.coords.latitude; //获取纬度
+                longitude = position.coords.longitude; //获取经度
+                alert(latitude)
+            });
+        } else {
+            alert("不支持定位功能");
+        }
+    }
+    getlocationpoint()
+
+    </script>
+    
+    <span class="breath-btn">dasdsa</span>
+</body>
+</html>
