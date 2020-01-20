@@ -37,7 +37,13 @@
 </head>
 <body>
     <div class="container">
-        <div class="content"></div>
+        <div class="content">
+            噫吁嚱，危乎高哉！蜀道之难，难于上青天！蚕丛及鱼凫，开国何茫然！尔来四万八千岁，不与秦塞通人烟。西当太白有鸟道，可以横绝峨眉巅。地崩山摧壮士死，然后天梯石栈相钩连。上有六龙回日之高标，下有冲波逆折之回川。黄鹤之飞尚不得过，猿猱欲度愁攀援。青泥何盘盘，百步九折萦岩峦。扪参历井仰胁息，以手抚膺坐长叹。
+
+问君西游何时还？畏途巉岩不可攀。但见悲鸟号古木，雄飞雌从绕林间。又闻子规啼夜月，愁空山。蜀道之难，难于上青天，使人听此凋朱颜！连峰去天不盈尺，枯松倒挂倚绝壁。飞湍瀑流争喧豗，砯崖转石万壑雷。其险也如此，嗟尔远道之人胡为乎来哉！
+
+剑阁峥嵘而崔嵬，一夫当关，万夫莫开。所守或匪亲，化为狼与豺。朝避猛虎，夕避长蛇；磨牙吮血，杀人如麻。锦城虽云乐，不如早还家。蜀道之难，难于上青天，侧身西望长咨嗟！
+        </div>
     </div>
     <div class="scrollbar">
         <div class="scroll-thumb"></div>
@@ -52,22 +58,59 @@
         thumb.style.height = `${container.clientHeight * (container.clientHeight / container.scrollHeight) - 4}px`
         const resetHeight = scrollBar.clientHeight - thumb.clientHeight
 
+        // 绑定滚动事件
         container.addEventListener('scroll', function () {
             window.requestAnimationFrame(function(){
                 changeThumb()
             })
         })
 
+        // 改变滑块位置函数
         function changeThumb() {
-            const scrollRadio = container.scrollTop / (container.scrollHeight - container.clientHeight)
+            const scrollRadio = Math.min(container.scrollTop / (container.scrollHeight - container.clientHeight), 1)
             const top = resetHeight * scrollRadio
-            thumb.style.transform = `translateY(${top}px)`
-
-            window.requestAnimationFrame(function(){
-                changeThumb()
-            })
+            thumb.style.top = `${top}px`
         }
 
+
+        let clientY = 0
+        let distance = 0
+        // 添加拖拽事件
+        thumb.addEventListener('mousedown', function() {
+            // 阻止拖拽事件，防止 mouseup 事件丢失
+            event.preventDefault()
+
+            const { top } = thumb.getBoundingClientRect()
+            const { top: scrollBarTop } = scrollBar.getBoundingClientRect()
+            clientY = event.clientY
+            distance = top - scrollBarTop
+            document.addEventListener('mousemove', handleMouseMove)
+            document.addEventListener('mouseup', handleMouseUp)
+        })
+
+        // 处理鼠标移动事件
+        function handleMouseMove() {
+            let topValue = event.clientY - clientY + distance
+            if (topValue < 0) {
+                topValue = 0
+            }
+            if (topValue > resetHeight) {
+                topValue = resetHeight
+            }
+            thumb.style.top = `${topValue}px`
+            container.scrollTop = (topValue / resetHeight) * (container.scrollHeight - container.clientHeight)
+        }
+
+        // 处理鼠标弹起事件
+        function handleMouseUp () {
+            document.removeEventListener('mousemove', handleMouseMove)
+            document.removeEventListener('mouseup', handleMouseUp)
+        }
+
+
+        // 问题：为什么会出现 mouseup 时间丢失的情况？？
+        // 原因1：因为出现了 drag 事件
+        // 原因2：另外一种原因：产生了 mouseleave 事件, 这样当鼠标产生 mouseup 事件的时候由于不是在对应的元素上所以不会产生 mouseup 事件
     </script>
 </body>
 </html>
