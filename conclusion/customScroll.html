@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .scrollbar {
+            float: left;
+            position: relative;
+            width: 8px;
+            padding: 2px 0;
+            box-sizing: border-box;
+            height: calc(100vh - 104px);
+        }
+
+        .scroll-thumb {
+            width: 8px;
+            position: relative;
+            border-radius: 4px;
+            background-color: blueviolet;
+        }
+
+        .container {
+            float: left;
+            overflow: scroll;
+            width: 300px;
+            height: calc(100vh - 100px);
+        }
+
+        .content {
+            height: 1200px;
+            background-color: rgba(0,0,0,0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content"></div>
+    </div>
+    <div class="scrollbar">
+        <div class="scroll-thumb"></div>
+    </div>
+    
+    <script>
+        // 滑块的高度计算规则  和 mac 同比例
+        const container = document.querySelector('.container')
+        const content = document.querySelector('.content')
+        const scrollBar = document.querySelector('.scrollbar')
+        const thumb = document.querySelector('.scroll-thumb')
+        thumb.style.height = `${container.clientHeight * (container.clientHeight / container.scrollHeight) - 4}px`
+        const resetHeight = scrollBar.clientHeight - thumb.clientHeight
+
+        container.addEventListener('scroll', function () {
+            window.requestAnimationFrame(function(){
+                changeThumb()
+            })
+        })
+
+        function changeThumb() {
+            const scrollRadio = container.scrollTop / (container.scrollHeight - container.clientHeight)
+            const top = resetHeight * scrollRadio
+            thumb.style.transform = `translateY(${top}px)`
+
+            window.requestAnimationFrame(function(){
+                changeThumb()
+            })
+        }
+
+    </script>
+</body>
+</html>
