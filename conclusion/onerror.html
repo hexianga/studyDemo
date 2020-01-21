@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+        // window.onerror 进行错误监控和上报
+        // 不同浏览器有不同的表现形式但是大多数的浏览器表现良好
+        // 参考文档：https://segmentfault.com/a/1190000011041164
+        // 压缩之后的代码可以通过 souremap 找到代码的错误原始位置
+        window.onerror = function () {
+            // 有具体的报错原因，代码出错的行号和列号. Error对象中存在错误的堆栈信息
+            // onerror 演化过程：最早因为页面中的js并不会很复杂，所以定位错误只需要一个行号就很容易找到，
+            // 后面加上了列号，最后又加上了堆栈信息。
+            console.log(JSON.stringify(arguments))
+        }
+
+        function makeError () {
+            var name = "geoff"
+            var msg = "Hi, " + Name
+            console.log(msg)
+        }
+
+        makeError()
+    </script>
+</body>
+</html>

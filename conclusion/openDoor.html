@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>开门大吉</title>
+    <style>
+        section {
+            float: left;
+            width: 450px;
+            height: 300px;
+            border: 1px solid #000;
+            margin: 30px 300px; 
+            background: url(images/3.jpg) no-repeat;
+            position: relative;
+            perspective: 1000px; /*给父盒子增加透视*/
+        }
+        .door-left,.door-right {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            background-color: pink;
+            transition: all 1s; /*连个门都是过渡*/
+        }
+        .door-left {
+            left: 0;
+            border-right: 1px solid #000;
+            transform-origin:left; /*旋转中心点*/
+        }
+        .door-right {
+            right: 0;
+            border-left: 1px solid #000;
+            transform-origin:right;  /*旋转中心点*/
+        }
+        .door-left::after,
+        .door-right::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 10px;
+            height: 10px;
+            border: 1px solid #000;
+            border-radius: 50%;
+            transform: translateY(-50%); /*自己高度的一半*/
+        }
+        .door-left::after {
+            right: 5px;
+        }
+        .door-right::after {
+            left: 5px;
+        }
+        /* 鼠标经过section，两个门进行翻转 */
+        section:hover .door-right {
+            transform: rotateY(130deg);
+        }
+        section:hover .door-left {
+            transform: rotateY(-130deg);
+        }
+
+
+        div.rotate {
+            clear: both;
+            width: 224px;
+            height: 224px;
+            margin-left: 100px;
+            position: relative;
+            perspective: 1000px;
+        }
+        div.rotate img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: all 1s;
+        }
+        div.rotate img:first-child {
+            z-index: 1;
+            backface-visibility: hidden;  /*不是正面对向屏幕，就隐藏*/
+        }
+        div.rotate img:last-child {
+            transform: rotateY(-180deg);
+        }
+        div.rotate:hover img:first-child {
+            transform: rotateY(180deg);
+        }
+        div.rotate:hover img:last-child {
+            transform: rotateY(0deg);
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <div class="door-left"></div>
+        <div class="door-right"></div>
+    </section>
+
+    <div class="rotate">
+        <img src="https://dpic1.tiankong.com/8a/ch/QJ6260300865.jpg" alt=""/>
+        <img src="https://dpic2.tiankong.com/1k/ed/QJ6144879150.jpg" alt=""/>
+    </div>
+</body>
+</html>
